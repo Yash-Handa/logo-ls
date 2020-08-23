@@ -16,6 +16,4 @@ func main() {
 	if *helpFlag {
 		getopt.PrintUsage(os.Stdout)
 	}
-
-	// goLS()
 }
