@@ -51,5 +51,5 @@ exec git diff-index --check --cached $against --
 # Update HELP.md file
 echo -e "\`\`\`txt" > HELP.md
 go run . -? >> HELP.md
-echo -e "\`\`\`" >>HELP.md
+echo -e "\`\`\`" >> HELP.md
 exec git add HELP.md
