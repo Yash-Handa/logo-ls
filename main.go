@@ -1,9 +1,34 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"os"
 
 	"github.com/pborman/getopt/v2"
+)
+
+// flags with corresponding bit values
+// frequently used flags should be higher in the list
+// help (-?) and version (-V) not included
+const (
+	flag_a uint = 1 << iota
+	flag_l
+	flag_alpha // sort in alphabetic order (default)
+	flag_A
+	flag_h
+	flag_1
+	flag_d
+	flag_s
+	flag_r
+	flag_S
+	flag_t
+	flag_X
+	flag_v
+	flag_U
+	flag_o
+	flag_g
+	flag_G
 )
 
 func main() {
@@ -30,12 +55,32 @@ func main() {
 
 	_ = getopt.BoolLong("reverse", 'r', "reverse order while sorting")
 
-	helpFlag := getopt.Bool('?', "display this help and exit")
-	_ = getopt.BoolLong("version", 'V', "output version information and exit")
+	f_help := getopt.Bool('?', "display this help and exit")
+	f_V := getopt.BoolLong("version", 'V', "output version information and exit")
 
-	getopt.ParseV2()
-	if *helpFlag {
-		getopt.PrintUsage(os.Stdout)
-
+	// using getopt.Getopt instead of parse to provide custom err
+	err := getopt.Getopt(nil)
+	if err != nil {
+		// code to handle error
+		log.Printf("%v\nTry 'logo-ls -?' for more information.", err)
+		os.Exit(2)
 	}
+
+	// if f_help is provided print help and exit(0)
+	if *f_help {
+		getopt.PrintUsage(os.Stdout)
+		os.Exit(0)
+	}
+
+	// if f_V is provided version will be printed and exit(0)
+	if *f_V {
+		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v1.0.0")
+		os.Exit(0)
+	}
+}
+
+func init() {
+	getopt.SetParameters("[files ...]")
+	log.SetPrefix("logo-ls: ")
+	log.SetFlags(0)
 }

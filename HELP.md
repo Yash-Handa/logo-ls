@@ -1,5 +1,5 @@
 ```txt
-Usage: logo-ls [-1?aAdgGhlorSstUvVX] [parameters ...]
+Usage: logo-ls [-1?aAdgGhlorSstUvVX] [files ...]
  -1                list one file per line.
  -?                display this help and exit
  -a, --all         do not ignore entries starting with .
