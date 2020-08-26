@@ -91,6 +91,52 @@ func (d *dir) print() []byte {
 	return t
 }
 
+// sorting functions
+func (d *dir) Len() int {
+	return len(d.files)
+}
+
+func (d *dir) Swap(i, j int) {
+	d.files[i], d.files[j] = d.files[j], d.files[i]
+}
+
+func (d *dir) Less(i, j int) bool {
+	return d.less(i, j)
+}
+
+// Custom less functions
+func lessFuncGenerator(d *dir) func(int, int) bool {
+	switch {
+	case (flagVector & flag_alpha) > 0:
+		// sort by alphabetical order of name.ext
+		return func(i, j int) bool {
+			return d.files[i].name+d.files[i].ext < d.files[j].name+d.files[j].ext
+		}
+	case (flagVector & flag_S) > 0:
+		// sort by file size, largest first
+		return func(i, j int) bool {
+			return d.files[i].size > d.files[j].size
+		}
+	case (flagVector & flag_t) > 0:
+		// sort by modification time, newest first
+		return func(i, j int) bool {
+			return d.files[i].modTime.Before(d.files[j].modTime)
+		}
+	case (flagVector & flag_X) > 0:
+		// sort alphabetically by entry extension
+		return func(i, j int) bool {
+			return d.files[i].ext < d.files[j].ext
+		}
+	case (flagVector & flag_v) > 0:
+		// natural sort of (version) numbers within text
+		return func(i, j int) bool {
+			return d.files[i].name+d.files[i].ext < d.files[j].name+d.files[j].ext
+		}
+	default:
+		return nil
+	}
+}
+
 // get Owner and Group info
 func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
 	return
