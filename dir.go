@@ -3,8 +3,11 @@ package main
 
 import (
 	"os"
+	"os/user"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -86,7 +89,7 @@ func (d *dir) print() []byte {
 	var t []byte
 	t = append(t, "Name of the dir: "+d.info.name+d.info.ext+d.info.indicator+"\n"...)
 	for _, v := range d.files {
-		t = append(t, v.name+v.ext+v.indicator+"\t"...)
+		t = append(t, v.name+v.ext+v.indicator+"\t"+v.owner+"\t"+v.group+"\n"...)
 	}
 	return t
 }
@@ -138,7 +141,42 @@ func lessFuncGenerator(d *dir) func(int, int) bool {
 }
 
 // get Owner and Group info
+var grpMap = make(map[string]string)
+var userMap = make(map[string]string)
+
 func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
+	if stat, ok := fi.Sys().(*syscall.Stat_t); ok {
+		if flagVector&(flag_l|flag_o) > 0 {
+			UID := strconv.Itoa(int(stat.Uid))
+			if n, ok := userMap[UID]; ok {
+				o = n
+			} else {
+				u, err := user.LookupId(UID)
+				if err != nil {
+					o = ""
+				} else {
+					o = u.Name
+					userMap[UID] = u.Name
+				}
+			}
+		}
+
+		if flagVector&flag_G == 0 && flagVector&(flag_l|flag_g) > 0 {
+			GID := strconv.Itoa(int(stat.Gid))
+			if n, ok := grpMap[GID]; ok {
+				g = n
+			} else {
+				grp, err := user.LookupGroupId(GID)
+				if err != nil {
+					g = ""
+				} else {
+					g = grp.Name
+					grpMap[GID] = grp.Name
+				}
+			}
+		}
+	}
+
 	return
 }
 
