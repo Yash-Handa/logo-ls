@@ -144,6 +144,31 @@ func main() {
 	case *f_l:
 		flagVector |= flag_l
 	}
+
+	// extract files/dir from arguments
+	dirs := getopt.Args()
+	if len(dirs) == 0 {
+		// use pwd
+		pwd, err := os.Open(".")
+		if err != nil {
+			log.Printf("cannot access \".\": %v\n", err)
+			pwd.Close()
+			os.Exit(2)
+		}
+		d, err := newDir(pwd)
+		pwd.Close()
+		if err != nil {
+			log.Printf("partial access to \".\": %v\n", err)
+			defer os.Exit(2)
+		}
+		// print the info of the files of pwd
+		fmt.Printf("%s\n", d.print())
+	} else {
+		for _, v := range dirs {
+			// use this list containing both dirs and files
+			_ = v
+		}
+	}
 }
 
 func init() {
