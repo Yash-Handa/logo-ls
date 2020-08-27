@@ -34,7 +34,7 @@ type dir struct {
 
 func newDir(d *os.File) (*dir, error) {
 	// some flag variable combinations
-	var long, curDir, showHidden bool = flagVector&(flag_l|flag_o|flag_g) > 0, flagVector&(flag_a) > 0, flagVector&(flag_a|flag_A) > 0
+	var long, curDir, showHidden bool = flagVector&(flag_l|flag_o|flag_g) > 0, flagVector&(flag_a|flag_d) > 0, flagVector&(flag_a|flag_A) > 0
 
 	t := new(dir)
 
@@ -42,7 +42,6 @@ func newDir(d *os.File) (*dir, error) {
 	t.info = new(file)
 	t.info.name = d.Name()
 	t.info.ext = ""
-	t.info.indicator = "/"
 	if curDir {
 		ds, err := d.Stat()
 		if err != nil {
@@ -62,15 +61,16 @@ func newDir(d *os.File) (*dir, error) {
 		}
 	}
 
+	// don't fill files info if the -d flag is passed
+	if flagVector&flag_d > 0 {
+		t.files = append(t.files, t.info)
+		return t, nil
+	}
+
 	files, err := d.Readdir(0)
 	for _, v := range files {
 		name := v.Name()
 		if !showHidden && strings.HasPrefix(name, ".") {
-			continue
-		}
-
-		// don't fill files info if the -d flag is passed
-		if flagVector&flag_d > 0 && v.IsDir() == false {
 			continue
 		}
 
@@ -90,12 +90,14 @@ func newDir(d *os.File) (*dir, error) {
 				f.blocks = s.Blocks
 			}
 		}
-		if flagVector&flag_d == 0 {
-			t.files = append(t.files, f)
-		}
+		t.files = append(t.files, f)
 		if v.IsDir() {
 			t.dirs = append(t.dirs, f)
 		}
+	}
+
+	if flagVector&flag_a > 0 {
+		t.files = append(t.files, t.info)
 	}
 
 	// return *dir with no error

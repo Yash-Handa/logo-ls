@@ -178,4 +178,4 @@ func init() {
 	log.SetFlags(0)
 }
 
-// todo: i. convert string to buffer, ii. multiple dir/ file handle, iii. print stuff
+// todo: i. multiple dir/ file handle
