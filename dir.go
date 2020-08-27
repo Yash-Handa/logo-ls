@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"syscall"
 	"text/tabwriter"
@@ -104,6 +105,14 @@ func newDir(d *os.File) (*dir, error) {
 
 func (d *dir) print() *bytes.Buffer {
 	// take care of printing, extending symbolic links in long forms
+
+	//sorting
+	lessFuncGenerator(d)
+	if flagVector&flag_U == 0 && flagVector&flag_r > 0 {
+		sort.Sort(sort.Reverse(d))
+	} else {
+		sort.Sort(d)
+	}
 
 	buf := bytes.NewBuffer([]byte(""))
 	var w *tabwriter.Writer
