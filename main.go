@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -47,7 +48,7 @@ func main() {
 	f_g := getopt.Bool('g', "\nlike -l, but do not list owner")
 	f_G := getopt.BoolLong("no-group", 'G', "in a long listing, don't print group names")
 	f_h := getopt.BoolLong("human-readable", 'h', "with -l and -s, print sizes like 1K 234M 2G etc.")
-	f_s := getopt.BoolLong("size", 's', "print the allocated size of each file, in blocks") //use os.Getpagesize()
+	f_s := getopt.BoolLong("size", 's', "print the allocated size of each file, in blocks")
 
 	// sorting flags
 	f_S := getopt.Bool('S', "sort by file size, largest first")
@@ -162,7 +163,7 @@ func main() {
 			defer os.Exit(2)
 		}
 		// print the info of the files of pwd
-		fmt.Printf("%s\n", d.print())
+		io.Copy(os.Stdout, d.print())
 	} else {
 		for _, v := range dirs {
 			// use this list containing both dirs and files
@@ -176,3 +177,5 @@ func init() {
 	log.SetPrefix("logo-ls: ")
 	log.SetFlags(0)
 }
+
+// todo: i. convert string to buffer, ii. multiple dir/ file handle, iii. print stuff

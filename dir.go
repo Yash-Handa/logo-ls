@@ -2,12 +2,15 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
+	"text/tabwriter"
 	"time"
 )
 
@@ -18,6 +21,7 @@ type file struct {
 	mode                 string
 	modeBits             uint32
 	owner, group         string // use syscall package
+	blocks               int64  // blocks required by the file multiply buy 512 to get block size
 }
 
 type dir struct {
@@ -52,6 +56,11 @@ func newDir(d *os.File) (*dir, error) {
 			t.info.modeBits = uint32(ds.Mode())
 			t.info.owner, t.info.group = getOwnerGroupInfo(ds)
 		}
+		if flagVector&flag_s > 0 {
+			if s, ok := ds.Sys().(*syscall.Stat_t); ok {
+				t.info.blocks = s.Blocks
+			}
+		}
 	}
 
 	files, err := d.Readdir(0)
@@ -60,6 +69,12 @@ func newDir(d *os.File) (*dir, error) {
 		if !showHidden && strings.HasPrefix(name, ".") {
 			continue
 		}
+
+		// don't fill files info if the -d flag is passed
+		if flagVector&flag_d > 0 && v.IsDir() == false {
+			continue
+		}
+
 		f := new(file)
 		f.ext = filepath.Ext(name)
 		f.name = name[0 : len(name)-len(f.ext)]
@@ -71,7 +86,14 @@ func newDir(d *os.File) (*dir, error) {
 			f.modeBits = uint32(v.Mode())
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
-		t.files = append(t.files, f)
+		if flagVector&flag_s > 0 {
+			if s, ok := v.Sys().(*syscall.Stat_t); ok {
+				f.blocks = s.Blocks
+			}
+		}
+		if flagVector&flag_d == 0 {
+			t.files = append(t.files, f)
+		}
 		if v.IsDir() {
 			t.dirs = append(t.dirs, f)
 		}
@@ -82,16 +104,42 @@ func newDir(d *os.File) (*dir, error) {
 	return t, err
 }
 
-func (d *dir) print() []byte {
+func (d *dir) print() *bytes.Buffer {
 	// take care of printing, extending symbolic links in long forms
 
-	// a dummy print:
-	var t []byte
-	t = append(t, "Name of the dir: "+d.info.name+d.info.ext+d.info.indicator+"\n"...)
-	for _, v := range d.files {
-		t = append(t, v.name+v.ext+v.indicator+"\t"+v.owner+"\t"+v.group+"\n"...)
+	buf := bytes.NewBuffer([]byte(""))
+	var w *tabwriter.Writer
+	switch {
+	case flagVector&(flag_l|flag_o|flag_g) > 0:
+		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
+		fmtStr := "%s\t%s\t%s\t%s\t%s\t%s\t\n"
+		for _, v := range d.files {
+			if flagVector&flag_s > 0 {
+				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
+			}
+			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(time.Stamp), v.name+v.ext+v.indicator)
+		}
+	case flagVector&flag_1 > 0:
+		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
+		for _, v := range d.files {
+			if flagVector&flag_s > 0 {
+				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
+			}
+			fmt.Fprintf(w, "%s\t\n", v.name+v.ext+v.indicator)
+		}
+	default:
+		w = tabwriter.NewWriter(buf, 0, 0, 2, ' ', tabwriter.DiscardEmptyColumns)
+		for _, v := range d.files {
+			s := ""
+			if flagVector&flag_s > 0 {
+				s = getSizeInFormate(v.blocks*512) + " "
+			}
+			fmt.Fprintf(w, "%s\t", s+v.name+v.ext+v.indicator)
+		}
+		fmt.Fprintln(w)
 	}
-	return t
+	w.Flush()
+	return buf
 }
 
 // sorting functions
@@ -195,4 +243,22 @@ func getIndicator(modebit os.FileMode) (i string) {
 		i = "="
 	}
 	return i
+}
+
+func getSizeInFormate(b int64) string {
+	if flagVector&flag_h == 0 {
+		return fmt.Sprintf("%d", b)
+	}
+
+	const unit = 1024
+	if b < unit {
+		return fmt.Sprintf("%d", b)
+	}
+	div, exp := int64(unit), 0
+	for n := b / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f%c",
+		float64(b)/float64(div), "KMGTPE"[exp])
 }
