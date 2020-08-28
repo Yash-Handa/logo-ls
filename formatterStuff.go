@@ -10,6 +10,16 @@ import (
 )
 
 func mainSort(a, b string) bool {
+	switch a {
+	case ".", "..":
+	default:
+		a = strings.TrimPrefix(a, ".")
+	}
+	switch b {
+	case ".", "..":
+	default:
+		b = strings.TrimPrefix(b, ".")
+	}
 	return strings.ToLower(a) < strings.ToLower(b)
 }
 

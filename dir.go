@@ -24,10 +24,11 @@ type file struct {
 }
 
 type dir struct {
-	info  *file
-	files []*file // all child files and dirs
-	dirs  []*file // for recursion contain only child dirs
-	less  func(int, int) bool
+	info   *file
+	parent *file
+	files  []*file // all child files and dirs
+	dirs   []*file // for recursion contain only child dirs
+	less   func(int, int) bool
 }
 
 // define methods on *dir type only not on file type
@@ -41,7 +42,6 @@ func newDir(d *os.File) (*dir, error) {
 	// filing current dir info
 	t.info = new(file)
 	t.info.name = d.Name()
-	t.info.ext = ""
 	if curDir {
 		ds, err := d.Stat()
 		if err != nil {
@@ -96,8 +96,35 @@ func newDir(d *os.File) (*dir, error) {
 		}
 	}
 
+	// if -a flag is passed then only eval parent dir and append to files
 	if flagVector&flag_a > 0 {
 		t.files = append(t.files, t.info)
+		p, err := filepath.Abs(d.Name())
+		if err != nil {
+			// partial *dir (without parent dir) and error
+			return t, err
+		}
+		pp := filepath.Dir(p)
+		pds, err := os.Lstat(pp)
+		if err != nil {
+			// partial *dir (without parent dir) and error
+			return t, err
+		}
+		t.parent = new(file)
+		t.parent.name = ".."
+		t.parent.size = pds.Size()
+		t.parent.modTime = pds.ModTime()
+		if long {
+			t.parent.mode = pds.Mode().String()
+			t.parent.modeBits = uint32(pds.Mode())
+			t.parent.owner, t.parent.group = getOwnerGroupInfo(pds)
+		}
+		if flagVector&flag_s > 0 {
+			if s, ok := pds.Sys().(*syscall.Stat_t); ok {
+				t.parent.blocks = s.Blocks
+			}
+		}
+		t.files = append(t.files, t.parent)
 	}
 
 	// return *dir with no error
