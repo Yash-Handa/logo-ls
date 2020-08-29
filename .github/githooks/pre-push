@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Build binary for variety of arch
+# linux amd64
+go env -w GOOS=linux GOARCH=amd64
+go build -o build/logo-ls-linux-amd64
+
+# linux arm64
+go env -w GOOS=linux GOARCH=arm64
+go build -o build/logo-ls-linux-arm64
+
+# linux 386
+go env -w GOOS=linux GOARCH=386
+go build -o build/logo-ls-linux-386
+
+# darwin amd64
+go env -w GOOS=darwin GOARCH=amd64
+go build -o build/logo-ls-darwin-amd64
+
+# reset env to default
+go env -u GOOS GOARCH
+
+exit 0
