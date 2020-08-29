@@ -117,14 +117,14 @@ func getIndicator(modebit os.FileMode) (i string) {
 	switch {
 	case modebit&os.ModeDir > 0:
 		i = "/"
-	case modebit&1000000 > 0:
-		i = "*"
 	case modebit&os.ModeNamedPipe > 0:
 		i = "|"
 	case modebit&os.ModeSymlink > 0:
 		i = "@"
 	case modebit&os.ModeSocket > 0:
 		i = "="
+	case modebit&1000000 > 0:
+		i = "*"
 	}
 	return i
 }

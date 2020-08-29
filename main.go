@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 
 	"github.com/pborman/getopt/v2"
 	"golang.org/x/crypto/ssh/terminal"
@@ -162,26 +163,64 @@ func main() {
 	dirs := getopt.Args()
 	if len(dirs) == 0 {
 		// use pwd
-		pwd, err := os.Open(".")
+		dirs = append(dirs, ".")
+	}
+
+	sort.Strings(dirs)
+
+	args := struct {
+		files []os.FileInfo
+		dirs  []*os.File
+	}{}
+
+	// segregate args in files and dirs, and print error for those which cannot be opened
+	for _, v := range dirs {
+		d, err := os.Open(v)
 		if err != nil {
-			log.Printf("cannot access \".\": %v\n", err)
-			pwd.Close()
-			os.Exit(2)
-		}
-		d, err := newDir(pwd)
-		pwd.Close()
-		if err != nil {
-			log.Printf("partial access to \".\": %v\n", err)
+			log.Printf("cannot access %q: %v\n", v, err)
+			d.Close()
 			defer os.Exit(2)
+			continue
 		}
-		// print the info of the files of pwd
-		io.Copy(os.Stdout, d.print())
-	} else {
-		for _, v := range dirs {
-			// use this list containing both dirs and files
-			_ = v
+		ds, err := d.Stat()
+		if err != nil {
+			log.Printf("cannot access %q: %v\n", v, err)
+			d.Close()
+			defer os.Exit(2)
+			continue
+		}
+		if ds.IsDir() {
+			args.dirs = append(args.dirs, d)
+		} else {
+			args.files = append(args.files, ds)
 		}
 	}
+
+	// process and display all files
+	io.Copy(os.Stdout, newDir_ArgFiles(args.files).print())
+	if len(args.files) > 0 && len(args.dirs) > 0 {
+		fmt.Println()
+	}
+
+	// process and display all the dirs in arg
+	pName := len(dirs) > 1
+	for i, v := range args.dirs {
+		if pName {
+			fmt.Printf("%s:\n", v.Name())
+		}
+		d, err := newDir(v)
+		v.Close()
+		if err != nil {
+			log.Printf("partial access to %q: %v\n", v.Name(), err)
+			defer os.Exit(2)
+		}
+		// print the info of the files of the directory
+		io.Copy(os.Stdout, d.print())
+		if i < len(args.dirs)-1 {
+			fmt.Println()
+		}
+	}
+
 }
 
 func init() {
@@ -189,5 +228,3 @@ func init() {
 	log.SetPrefix("logo-ls: ")
 	log.SetFlags(0)
 }
-
-// todo: i. multiple dir/ file handle

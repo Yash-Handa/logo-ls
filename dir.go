@@ -43,7 +43,7 @@ func newDir(d *os.File) (*dir, error) {
 
 	// filing current dir info
 	t.info = new(file)
-	t.info.name = d.Name()
+	t.info.name = "."
 	if curDir {
 		ds, err := d.Stat()
 		if err != nil {
@@ -132,6 +132,34 @@ func newDir(d *os.File) (*dir, error) {
 	// return *dir with no error
 	// or partial *dir with error (produced by Readdir)
 	return t, err
+}
+
+func newDir_ArgFiles(files []os.FileInfo) *dir {
+	var long bool = flagVector&(flag_l|flag_o|flag_g) > 0
+
+	t := new(dir)
+
+	for _, v := range files {
+		name := v.Name()
+		f := new(file)
+		f.ext = filepath.Ext(name)
+		f.name = name[0 : len(name)-len(f.ext)]
+		f.indicator = getIndicator(v.Mode())
+		f.size = v.Size()
+		f.modTime = v.ModTime()
+		if long {
+			f.mode = v.Mode().String()
+			f.modeBits = uint32(v.Mode())
+			f.owner, f.group = getOwnerGroupInfo(v)
+		}
+		if flagVector&flag_s > 0 {
+			if s, ok := v.Sys().(*syscall.Stat_t); ok {
+				f.blocks = s.Blocks
+			}
+		}
+		t.files = append(t.files, f)
+	}
+	return t
 }
 
 func (d *dir) print() *bytes.Buffer {

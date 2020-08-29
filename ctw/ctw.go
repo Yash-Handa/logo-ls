@@ -32,9 +32,12 @@ func findMax(arr []int) int {
 //Ctw has complexity of no. of columns x no. of files
 // termW is width of the terminal
 func Ctw(buf *bytes.Buffer, data []string, termW int) {
+	dn := len(data) // length of data slice
+	if dn == 0 {
+		return
+	}
 	const pad = 2            // padding b/w columns
 	var lens []int           // slice of lengths of each element in the data slice
-	dn := len(data)          // length of data slice
 	widths := make([]int, 0) // slice of widths of each column (don't use because it over run once)
 	var prevWidths []int     // accurate widths value
 	for _, v := range data {
