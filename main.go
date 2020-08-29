@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/pborman/getopt/v2"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 // flags with corresponding bit values
@@ -34,6 +35,9 @@ const (
 
 // flagVector has all the options set in it. Each bit represent an option.
 var flagVector uint
+
+// terminal width for formatting
+var terminalWidth int
 
 func main() {
 	// content flags
@@ -144,6 +148,14 @@ func main() {
 		flagVector |= flag_g
 	case *f_l:
 		flagVector |= flag_l
+	case *f_1:
+	default:
+		// screen width for custom tw
+		var e error = nil
+		terminalWidth, _, e = terminal.GetSize(int(os.Stdout.Fd()))
+		if e != nil {
+			terminalWidth = 80
+		}
 	}
 
 	// extract files/dir from arguments

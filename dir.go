@@ -11,6 +11,8 @@ import (
 	"syscall"
 	"text/tabwriter"
 	"time"
+
+	"github.com/Yash-Handa/logo-ls/ctw"
 )
 
 type file struct {
@@ -155,6 +157,7 @@ func (d *dir) print() *bytes.Buffer {
 			}
 			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(time.Stamp), v.name+v.ext+v.indicator)
 		}
+		w.Flush()
 	case flagVector&flag_1 > 0:
 		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
 		for _, v := range d.files {
@@ -163,18 +166,19 @@ func (d *dir) print() *bytes.Buffer {
 			}
 			fmt.Fprintf(w, "%s\t\n", v.name+v.ext+v.indicator)
 		}
+		w.Flush()
 	default:
-		w = tabwriter.NewWriter(buf, 0, 0, 2, ' ', tabwriter.DiscardEmptyColumns)
-		for _, v := range d.files {
+		// w = tabwriter.NewWriter(buf, 0, 0, 2, ' ', tabwriter.DiscardEmptyColumns)
+		temp := make([]string, len(d.files))
+		for i, v := range d.files {
 			s := ""
 			if flagVector&flag_s > 0 {
 				s = getSizeInFormate(v.blocks*512) + " "
 			}
-			fmt.Fprintf(w, "%s\t", s+v.name+v.ext+v.indicator)
+			temp[i] = s + v.name + v.ext + v.indicator
 		}
-		fmt.Fprintln(w)
+		ctw.Ctw(buf, temp, terminalWidth)
 	}
-	w.Flush()
 	return buf
 }
 
