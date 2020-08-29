@@ -5,3 +5,23 @@ echo -e "\`\`\`txt" > HELP.md
 go run . -? >> HELP.md
 echo -e "\`\`\`" >> HELP.md
 exec git add HELP.md
+
+# Build binery for varity of arch
+# linux amd64
+go env -w GOOS=linux GOARCH=amd64
+go build -o build/logo-ls-linux-amd64 -race
+
+# linux arm64
+go env -w GOOS=linux GOARCH=arm64
+go build -o build/logo-ls-linux-arm64 -race
+
+# linux 386
+go env -w GOOS=linux GOARCH=386
+go build -o build/logo-ls-linux-386 -race
+
+# darwin amd64
+go env -w GOOS=darwin GOARCH=amd64
+go build -o build/logo-ls-darwin-amd64 -race
+
+# reset env to default
+go env -u GOOS GOARCH

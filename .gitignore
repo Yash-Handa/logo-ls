@@ -16,3 +16,4 @@
 
 # Do not commit the executable
 logo-ls
+build/
