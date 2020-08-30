@@ -1,21 +1,41 @@
 #!/bin/sh
 
+R_NAME=$1
+R_URL=$2
+
+error_exit()
+{
+  if [ "$?" != "0" ]; then
+  nl=$'\n'
+	echo "$1""$nl""$2""$nl""$nl""Aborting push to ""$R_NAME"" (""$R_URL"")" 1>&2
+	exit 1
+  fi
+}
+
 # Build binary for variety of arch
 # linux amd64
-go env -w GOOS=linux GOARCH=amd64
-go build -o build/logo-ls-linux-amd64
+ERROR=$(go env -w GOOS=linux GOARCH=amd64 2>&1 > /dev/null)
+error_exit "Cannot set GOOS=linux and GOARCH=amd64:" "$ERROR"
+ERROR=$(go build -o build/logo-ls-linux-amd64 2>&1 > /dev/null)
+error_exit "Cannot build logo-ls-linux-amd64:" "$ERROR"
 
 # linux arm64
-go env -w GOOS=linux GOARCH=arm64
-go build -o build/logo-ls-linux-arm64
+ERROR=$(go env -w GOOS=linux GOARCH=arm64 2>&1 > /dev/null)
+error_exit "Cannot set GOOS=linux and GOARCH=arm64:" "$ERROR"
+ERROR=$(go build -o build/logo-ls-linux-arm64 2>&1 > /dev/null)
+error_exit "Cannot build logo-ls-linux-arm64:" "$ERROR"
 
 # linux 386
-go env -w GOOS=linux GOARCH=386
-go build -o build/logo-ls-linux-386
+ERROR=$(go env -w GOOS=linux GOARCH=386 2>&1 > /dev/null)
+error_exit "Cannot set GOOS=linux and GOARCH=386:" "$ERROR"
+ERROR=$(go build -o build/logo-ls-linux-386 2>&1 > /dev/null)
+error_exit "Cannot build logo-ls-linux-386:" "$ERROR"
 
 # darwin amd64
-go env -w GOOS=darwin GOARCH=amd64
-go build -o build/logo-ls-darwin-amd64
+ERROR=$(go env -w GOOS=darwin GOARCH=amd64 2>&1 > /dev/null)
+error_exit "Cannot set GOOS=darwin and GOARCH=amd64:" "$ERROR"
+ERROR=$(go build -o build/logo-ls-darwin-amd64 2>&1 > /dev/null)
+error_exit "Cannot build logo-ls-darwin-amd64:" "$ERROR"
 
 # reset env to default
 go env -u GOOS GOARCH
