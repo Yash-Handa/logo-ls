@@ -1,5 +1,5 @@
 ```txt
-Usage: logo-ls [-1?aAdgGhlorSstUvVX] [files ...]
+Usage: logo-ls [-1?aAdgGhloRrSstUvVX] [files ...]
  -1                list one file per line.
  -?                display this help and exit
  -a, --all         do not ignore entries starting with .
@@ -11,6 +11,7 @@ Usage: logo-ls [-1?aAdgGhlorSstUvVX] [files ...]
                    with -l and -s, print sizes like 1K 234M 2G etc.
  -l                use a long listing format
  -o                like -l, but do not list group information
+ -R, --recursive   list subdirectories recursively
  -r, --reverse     reverse order while sorting
  -S                sort by file size, largest first
  -s, --size        print the allocated size of each file, in blocks

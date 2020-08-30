@@ -4,6 +4,8 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -28,8 +30,8 @@ type file struct {
 type dir struct {
 	info   *file
 	parent *file
-	files  []*file // all child files and dirs
-	dirs   []*file // for recursion contain only child dirs
+	files  []*file  // all child files and dirs
+	dirs   []string // for recursion contain only child dirs
 	less   func(int, int) bool
 }
 
@@ -94,7 +96,7 @@ func newDir(d *os.File) (*dir, error) {
 		}
 		t.files = append(t.files, f)
 		if v.IsDir() {
-			t.dirs = append(t.dirs, f)
+			t.dirs = append(t.dirs, name+"/")
 		}
 	}
 
@@ -160,6 +162,37 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 		t.files = append(t.files, f)
 	}
 	return t
+}
+
+func newDirs_Recussion(d *os.File) {
+	dd, err := newDir(d)
+	d.Close()
+	if err != nil {
+		log.Printf("partial access to %q: %v\n", d.Name(), err)
+		_ = set_osExitCode(code_Minor)
+	}
+	// print the info of the files of the directory
+	io.Copy(os.Stdout, dd.print())
+	if len(dd.dirs) == 0 {
+		return
+	}
+	// at this point dd.print has sorted the children files
+	// but not using it instead printing children in directory order
+	temp := make([]string, len(dd.dirs))
+	for i, v := range dd.dirs {
+		temp[i] = filepath.Join(d.Name(), v)
+	}
+	for _, v := range temp {
+		fmt.Printf("\n%s:\n", v)
+		f, err := os.Open(v)
+		if err != nil {
+			log.Printf("cannot access %q: %v\n", v, err)
+			f.Close()
+			_ = set_osExitCode(code_Minor)
+			continue
+		}
+		newDirs_Recussion(f)
+	}
 }
 
 func (d *dir) print() *bytes.Buffer {

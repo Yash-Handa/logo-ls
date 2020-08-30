@@ -20,6 +20,7 @@ const (
 	flag_alpha // sort in alphabetic order (default)
 	flag_A
 	flag_h
+	flag_R
 	flag_r
 	flag_S
 	flag_t
@@ -39,6 +40,26 @@ var flagVector uint
 
 // terminal width for formatting
 var terminalWidth int
+
+const (
+	code_OK int = iota
+	code_Minor
+	code_Serious
+)
+
+// os exit code (do not update manually)
+var osExitCode int = code_OK
+
+// only use set_osExitCode to update the value of osExitCode
+func set_osExitCode(c int) int {
+	switch {
+	case c == code_Serious:
+		osExitCode = code_Serious
+	case c == code_Minor && osExitCode != code_Serious:
+		osExitCode = code_Minor
+	}
+	return osExitCode
+}
 
 func main() {
 	// content flags
@@ -63,6 +84,7 @@ func main() {
 	f_t := getopt.Bool('t', "sort by modification time, newest first")
 
 	f_r := getopt.BoolLong("reverse", 'r', "reverse order while sorting")
+	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively")
 
 	f_help := getopt.Bool('?', "display this help and exit")
 	f_V := getopt.BoolLong("version", 'V', "output version information and exit")
@@ -72,19 +94,19 @@ func main() {
 	if err != nil {
 		// code to handle error
 		log.Printf("%v\nTry 'logo-ls -?' for more information.", err)
-		os.Exit(2)
+		os.Exit(set_osExitCode(code_Serious))
 	}
 
 	// if f_help is provided print help and exit(0)
 	if *f_help {
 		getopt.PrintUsage(os.Stdout)
-		os.Exit(0)
+		os.Exit(osExitCode)
 	}
 
 	// if f_V is provided version will be printed and exit(0)
 	if *f_V {
-		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v0.0.0")
-		os.Exit(0)
+		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v0.2.0")
+		os.Exit(osExitCode)
 	}
 
 	// set one of -A and -a priority -A > -a
@@ -114,6 +136,11 @@ func main() {
 	// set reverse (-r) flag
 	if *f_r {
 		flagVector |= flag_r
+	}
+
+	// set recursion (-R) flag
+	if *f_R {
+		flagVector |= flag_R
 	}
 
 	// set -1 flag
@@ -179,14 +206,14 @@ func main() {
 		if err != nil {
 			log.Printf("cannot access %q: %v\n", v, err)
 			d.Close()
-			defer os.Exit(2)
+			_ = set_osExitCode(code_Serious)
 			continue
 		}
 		ds, err := d.Stat()
 		if err != nil {
 			log.Printf("cannot access %q: %v\n", v, err)
 			d.Close()
-			defer os.Exit(2)
+			_ = set_osExitCode(code_Serious)
 			continue
 		}
 		if ds.IsDir() {
@@ -203,24 +230,36 @@ func main() {
 	}
 
 	// process and display all the dirs in arg
-	pName := len(dirs) > 1
-	for i, v := range args.dirs {
-		if pName {
+	if flagVector&flag_R > 0 {
+		// use recursive func
+		for i, v := range args.dirs {
+			if i > 0 {
+				fmt.Println()
+			}
 			fmt.Printf("%s:\n", v.Name())
+			newDirs_Recussion(v)
 		}
-		d, err := newDir(v)
-		v.Close()
-		if err != nil {
-			log.Printf("partial access to %q: %v\n", v.Name(), err)
-			defer os.Exit(2)
-		}
-		// print the info of the files of the directory
-		io.Copy(os.Stdout, d.print())
-		if i < len(args.dirs)-1 {
-			fmt.Println()
+	} else {
+		pName := len(dirs) > 1
+		for i, v := range args.dirs {
+			if pName {
+				fmt.Printf("%s:\n", v.Name())
+			}
+			d, err := newDir(v)
+			v.Close()
+			if err != nil {
+				log.Printf("partial access to %q: %v\n", v.Name(), err)
+				_ = set_osExitCode(code_Serious)
+			}
+			// print the info of the files of the directory
+			io.Copy(os.Stdout, d.print())
+			if i < len(args.dirs)-1 {
+				fmt.Println()
+			}
 		}
 	}
 
+	os.Exit(osExitCode)
 }
 
 func init() {
