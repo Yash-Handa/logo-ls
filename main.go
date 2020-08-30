@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"time"
 
 	"github.com/pborman/getopt/v2"
 	"golang.org/x/crypto/ssh/terminal"
@@ -40,6 +41,9 @@ var flagVector uint
 
 // terminal width for formatting
 var terminalWidth int
+
+// time formate
+var timeFormate string
 
 const (
 	code_OK int = iota
@@ -85,6 +89,7 @@ func main() {
 
 	f_r := getopt.BoolLong("reverse", 'r', "reverse order while sorting")
 	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively")
+	f_T := getopt.EnumLong("time-style", 'T', []string{"Stamp", "StampMilli", "Kitchen", "ANSIC", "UnixDate", "RubyDate", "RFC1123", "RFC1123Z", "RFC3339", "RFC822", "RFC822Z", "RFC850"}, "Stamp", "time/date format with -l; see time-style below")
 
 	f_help := getopt.Bool('?', "display this help and exit")
 	f_V := getopt.BoolLong("version", 'V', "output version information and exit")
@@ -100,12 +105,25 @@ func main() {
 	// if f_help is provided print help and exit(0)
 	if *f_help {
 		getopt.PrintUsage(os.Stdout)
+		fmt.Println("\nPossible value for --time-style (-T)")
+		fmt.Printf("%-11s %-32q\n", "ANSIC", "Mon Jan _2 15:04:05 2006")
+		fmt.Printf("%-11s %-32q\n", "UnixDate", "Mon Jan _2 15:04:05 MST 2006")
+		fmt.Printf("%-11s %-32q\n", "RubyDate", "Mon Jan 02 15:04:05 -0700 2006")
+		fmt.Printf("%-11s %-32q\n", "RFC822", "02 Jan 06 15:04 MST")
+		fmt.Printf("%-11s %-32q\n", "RFC822Z", "02 Jan 06 15:04 -0700")
+		fmt.Printf("%-11s %-32q\n", "RFC850", "Monday, 02-Jan-06 15:04:05 MST")
+		fmt.Printf("%-11s %-32q\n", "RFC1123", "Mon, 02 Jan 2006 15:04:05 MST")
+		fmt.Printf("%-11s %-32q\n", "RFC1123Z", "Mon, 02 Jan 2006 15:04:05 -0700")
+		fmt.Printf("%-11s %-32q\n", "RFC3339", "2006-01-02T15:04:05Z07:00")
+		fmt.Printf("%-11s %-32q\n", "Kitchen", "3:04PM")
+		fmt.Printf("%-11s %-32q [Default]\n", "Stamp", "Mon Jan _2 15:04:05")
+		fmt.Printf("%-11s %-32q\n", "StampMilli", "Jan _2 15:04:05.000")
 		os.Exit(osExitCode)
 	}
 
 	// if f_V is provided version will be printed and exit(0)
 	if *f_V {
-		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v0.2.0")
+		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v1.1.0")
 		os.Exit(osExitCode)
 	}
 
@@ -156,6 +174,36 @@ func main() {
 	// set -G flag
 	if *f_G {
 		flagVector |= flag_G
+	}
+
+	// set time formate
+	switch *f_T {
+	case "Stamp":
+		timeFormate = time.Stamp
+	case "StampMilli":
+		timeFormate = time.StampMilli
+	case "Kitchen":
+		timeFormate = time.Kitchen
+	case "ANSIC":
+		timeFormate = time.ANSIC
+	case "UnixDate":
+		timeFormate = time.UnixDate
+	case "RubyDate":
+		timeFormate = time.RubyDate
+	case "RFC1123":
+		timeFormate = time.RFC1123
+	case "RFC1123Z":
+		timeFormate = time.RFC1123Z
+	case "RFC3339":
+		timeFormate = time.RFC3339
+	case "RFC822":
+		timeFormate = time.RFC822
+	case "RFC822Z":
+		timeFormate = time.RFC822Z
+	case "RFC850":
+		timeFormate = time.RFC850
+	default:
+		timeFormate = time.Stamp
 	}
 
 	// set -h flag

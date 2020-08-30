@@ -216,7 +216,7 @@ func (d *dir) print() *bytes.Buffer {
 			if flagVector&flag_s > 0 {
 				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
 			}
-			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(time.Stamp), v.name+v.ext+v.indicator)
+			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.name+v.ext+v.indicator)
 		}
 		w.Flush()
 	case flagVector&flag_1 > 0:

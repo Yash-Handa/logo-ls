@@ -1,5 +1,5 @@
 ```txt
-Usage: logo-ls [-1?aAdgGhloRrSstUvVX] [files ...]
+Usage: logo-ls [-1?aAdgGhloRrSstUvVX] [-T value] [files ...]
  -1                list one file per line.
  -?                display this help and exit
  -a, --all         do not ignore entries starting with .
@@ -16,8 +16,24 @@ Usage: logo-ls [-1?aAdgGhloRrSstUvVX] [files ...]
  -S                sort by file size, largest first
  -s, --size        print the allocated size of each file, in blocks
  -t                sort by modification time, newest first
+ -T, --time-style=value
+                   time/date format with -l; see time-style below [Stamp]
  -U                do not sort; list entries in directory order
  -v                natural sort of (version) numbers within text
  -V, --version     output version information and exit
  -X                sort alphabetically by entry extension
+
+Possible value for --time-style (-T)
+ANSIC       "Mon Jan _2 15:04:05 2006"      
+UnixDate    "Mon Jan _2 15:04:05 MST 2006"  
+RubyDate    "Mon Jan 02 15:04:05 -0700 2006"
+RFC822      "02 Jan 06 15:04 MST"           
+RFC822Z     "02 Jan 06 15:04 -0700"         
+RFC850      "Monday, 02-Jan-06 15:04:05 MST"
+RFC1123     "Mon, 02 Jan 2006 15:04:05 MST" 
+RFC1123Z    "Mon, 02 Jan 2006 15:04:05 -0700"
+RFC3339     "2006-01-02T15:04:05Z07:00"     
+Kitchen     "3:04PM"                        
+Stamp       "Mon Jan _2 15:04:05"            [Default]
+StampMilli  "Jan _2 15:04:05.000"           
 ```
