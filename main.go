@@ -19,6 +19,7 @@ const (
 	flag_l uint = 1 << iota
 	flag_a
 	flag_alpha // sort in alphabetic order (default)
+	flag_D     // stop printing of git status
 	flag_A
 	flag_h
 	flag_R
@@ -69,6 +70,9 @@ func main() {
 	// content flags
 	f_a := getopt.BoolLong("all", 'a', "do not ignore entries starting with .")
 	f_A := getopt.BoolLong("almost-all", 'A', "do not list implied . and ..")
+
+	// disable Stuff
+	f_D := getopt.BoolLong("disable-git-status", 'D', "don't print git status of files")
 
 	// display flags
 	f_1 := getopt.Bool('1', "list one file per line.")
@@ -159,6 +163,11 @@ func main() {
 	// set recursion (-R) flag
 	if *f_R {
 		flagVector |= flag_R
+	}
+
+	// set disable-git-status (-D) flag
+	if *f_D {
+		flagVector |= flag_D
 	}
 
 	// set -1 flag
