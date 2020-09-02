@@ -229,12 +229,12 @@ func (d *dir) print() *bytes.Buffer {
 	switch {
 	case flagVector&(flag_l|flag_o|flag_g) > 0:
 		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
-		fmtStr := "%s\t%s\t%s\t%s\t%s\t%s\t\n"
+		fmtStr := "%s\t%s\t%s\t%s\t%s\t%s\t%s\t\n"
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
 				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
 			}
-			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.name+v.ext+v.indicator)
+			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.name+v.ext+v.indicator, string(v.gitStatus))
 		}
 		w.Flush()
 	case flagVector&flag_1 > 0:
@@ -243,7 +243,7 @@ func (d *dir) print() *bytes.Buffer {
 			if flagVector&flag_s > 0 {
 				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
 			}
-			fmt.Fprintf(w, "%s\t\n", v.name+v.ext+v.indicator)
+			fmt.Fprintf(w, "%s\t%s\t\n", v.name+v.ext+v.indicator, string(v.gitStatus))
 		}
 		w.Flush()
 	default:
