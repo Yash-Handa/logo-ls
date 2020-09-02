@@ -1,10 +1,12 @@
 ```txt
-Usage: logo-ls [-1?aAdgGhloRrSstUvVX] [-T value] [files ...]
+Usage: logo-ls [-1?aAdDgGhloRrSstUvVX] [-T value] [files ...]
  -1                list one file per line.
  -?                display this help and exit
  -a, --all         do not ignore entries starting with .
  -A, --almost-all  do not list implied . and ..
  -d, --directory   list directories themselves, not their contents
+ -D, --disable-git-status
+                   don't print git status of files
  -g                like -l, but do not list owner
  -G, --no-group    in a long listing, don't print group names
  -h, --human-readable

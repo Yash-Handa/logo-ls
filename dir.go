@@ -25,6 +25,8 @@ type file struct {
 	modeBits             uint32
 	owner, group         string // use syscall package
 	blocks               int64  // blocks required by the file multiply buy 512 to get block size
+	// 'U'-> untracked file 'M'-> Modified file '●'-> modified dir ' '-> Not Updated/ not in git repo
+	gitStatus rune
 }
 
 type dir struct {
@@ -46,11 +48,18 @@ func newDir(d *os.File) (*dir, error) {
 	// filing current dir info
 	t.info = new(file)
 	t.info.name = "."
+	ds, err := d.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	// getting Git Status of the entire repository
+	var gitRepoStatus map[string]rune // could be nil
+	if flagVector&flag_D == 0 {
+		gitRepoStatus = getFilesGitStatus(d.Name()) // returns map or nil
+	}
+
 	if curDir {
-		ds, err := d.Stat()
-		if err != nil {
-			return nil, err
-		}
 		t.info.size = ds.Size()
 		t.info.modTime = ds.ModTime()
 		if long {
@@ -94,6 +103,15 @@ func newDir(d *os.File) (*dir, error) {
 				f.blocks = s.Blocks
 			}
 		}
+
+		if gitRepoStatus != nil {
+			if v.IsDir() {
+				f.gitStatus = gitRepoStatus[v.Name()+"/"]
+			} else {
+				f.gitStatus = gitRepoStatus[v.Name()]
+			}
+		}
+
 		t.files = append(t.files, f)
 		if v.IsDir() {
 			t.dirs = append(t.dirs, name+"/")
@@ -231,14 +249,25 @@ func (d *dir) print() *bytes.Buffer {
 	default:
 		// w = tabwriter.NewWriter(buf, 0, 0, 2, ' ', tabwriter.DiscardEmptyColumns)
 		temp := make([]string, len(d.files))
+		tempG := make([]string, len(d.files))
+		noGit := true
 		for i, v := range d.files {
 			s := ""
 			if flagVector&flag_s > 0 {
 				s = getSizeInFormate(v.blocks*512) + " "
 			}
 			temp[i] = s + v.name + v.ext + v.indicator
+
+			if v.gitStatus != '\x00' && v.gitStatus != ' ' {
+				tempG[i] = " " + string(v.gitStatus)
+				noGit = false
+			}
 		}
-		ctw.Ctw(buf, temp, terminalWidth)
+		if noGit {
+			ctw.Ctw(buf, temp, terminalWidth)
+		} else {
+			ctw.CtwGit(buf, temp, tempG, terminalWidth)
+		}
 	}
 	return buf
 }
