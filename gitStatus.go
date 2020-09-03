@@ -27,7 +27,7 @@ func getRepoStatus(path string) (git.Status, string, error) {
 	return ws, w.Filesystem.Root(), nil
 }
 
-func getFilesGitStatus(p string) map[string]rune {
+func getFilesGitStatus(p string) map[string]string {
 	gitRepo, gitRoot, err := getRepoStatus(p)
 	if err != nil {
 		return nil
@@ -37,7 +37,7 @@ func getFilesGitStatus(p string) map[string]rune {
 		return nil
 	}
 
-	t := make(map[string]rune)
+	t := make(map[string]string)
 
 	for i, v := range gitRepo {
 		i = gitFilePath(gitRoot+"/"+i, pAbs+"/")
@@ -49,13 +49,13 @@ func getFilesGitStatus(p string) map[string]rune {
 		for j, seg := range dirs {
 			if j == len(dirs)-1 {
 				if v.Worktree == '?' {
-					t[i] = 'U'
+					t[i] = "U"
 				} else {
-					t[i] = rune(v.Worktree)
+					t[i] = string(v.Worktree)
 				}
 			} else {
 				d += seg
-				t[d] = '●'
+				t[d] = "●"
 			}
 		}
 	}

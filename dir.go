@@ -11,7 +11,6 @@ import (
 	"sort"
 	"strings"
 	"syscall"
-	"text/tabwriter"
 	"time"
 
 	"github.com/Yash-Handa/logo-ls/ctw"
@@ -26,7 +25,9 @@ type file struct {
 	owner, group         string // use syscall package
 	blocks               int64  // blocks required by the file multiply buy 512 to get block size
 	// 'U'-> untracked file 'M'-> Modified file '●'-> modified dir ' '-> Not Updated/ not in git repo
-	gitStatus rune
+	gitStatus string
+	icon      string
+	iconColor string
 }
 
 type dir struct {
@@ -54,7 +55,7 @@ func newDir(d *os.File) (*dir, error) {
 	}
 
 	// getting Git Status of the entire repository
-	var gitRepoStatus map[string]rune // could be nil
+	var gitRepoStatus map[string]string // could be nil
 	if flagVector&flag_D == 0 {
 		gitRepoStatus = getFilesGitStatus(d.Name()) // returns map or nil
 	}
@@ -101,6 +102,13 @@ func newDir(d *os.File) (*dir, error) {
 		if flagVector&flag_s > 0 {
 			if s, ok := v.Sys().(*syscall.Stat_t); ok {
 				f.blocks = s.Blocks
+			}
+		}
+
+		if flagVector&flag_i == 0 {
+			f.icon = "\uf15c"
+			if flagVector&flag_c == 0 {
+				f.iconColor = "\033[38;2;127;213;234m"
 			}
 		}
 
@@ -225,49 +233,40 @@ func (d *dir) print() *bytes.Buffer {
 	}
 
 	buf := bytes.NewBuffer([]byte(""))
-	var w *tabwriter.Writer
 	switch {
 	case flagVector&(flag_l|flag_o|flag_g) > 0:
-		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
-		fmtStr := "%s\t%s\t%s\t%s\t%s\t%s\t%s\t\n"
+		w := ctw.NewLong(9)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
+				w.AddRow(getSizeInFormate(v.blocks*512), v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+			} else {
+				w.AddRow("", v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			}
-			fmt.Fprintf(w, fmtStr, v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.name+v.ext+v.indicator, string(v.gitStatus))
+			w.IconColor(v.iconColor)
 		}
-		w.Flush()
+		w.Flush(buf)
 	case flagVector&flag_1 > 0:
-		w = tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.DiscardEmptyColumns)
+		w := ctw.NewLong(4)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				fmt.Fprintf(w, "%s\t", getSizeInFormate(v.blocks*512))
+				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+			} else {
+				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			}
-			fmt.Fprintf(w, "%s\t%s\t\n", v.name+v.ext+v.indicator, string(v.gitStatus))
+			w.IconColor(v.iconColor)
 		}
-		w.Flush()
+		w.Flush(buf)
 	default:
-		// w = tabwriter.NewWriter(buf, 0, 0, 2, ' ', tabwriter.DiscardEmptyColumns)
-		temp := make([]string, len(d.files))
-		tempG := make([]string, len(d.files))
-		noGit := true
-		for i, v := range d.files {
-			s := ""
+		w := ctw.New(terminalWidth)
+		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				s = getSizeInFormate(v.blocks*512) + " "
+				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+			} else {
+				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			}
-			temp[i] = s + v.name + v.ext + v.indicator
-
-			if v.gitStatus != '\x00' && v.gitStatus != ' ' {
-				tempG[i] = " " + string(v.gitStatus)
-				noGit = false
-			}
+			w.IconColor(v.iconColor)
 		}
-		if noGit {
-			ctw.Ctw(buf, temp, terminalWidth)
-		} else {
-			ctw.CtwGit(buf, temp, tempG, terminalWidth)
-		}
+		w.Flush(buf)
 	}
 	return buf
 }

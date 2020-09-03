@@ -1,19 +1,26 @@
 ```txt
-Usage: logo-ls [-1?aAdDgGhloRrSstUvVX] [-T value] [files ...]
+Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
  -1                list one file per line.
  -?                display this help and exit
  -a, --all         do not ignore entries starting with .
  -A, --almost-all  do not list implied . and ..
+ -c, --disable-color
+                   don't color icons, filenames and git status (use this to
+                   print to a file)
  -d, --directory   list directories themselves, not their contents
  -D, --disable-git-status
-                   don't print git status of files
+                   don't print git status of files, In recursive -R this flag
+                   enables git-status
  -g                like -l, but do not list owner
  -G, --no-group    in a long listing, don't print group names
  -h, --human-readable
                    with -l and -s, print sizes like 1K 234M 2G etc.
+ -i, --disable-icon
+                   don't print icons of the files
  -l                use a long listing format
  -o                like -l, but do not list group information
- -R, --recursive   list subdirectories recursively
+ -R, --recursive   list subdirectories recursively, git-status is disabled by
+                   default
  -r, --reverse     reverse order while sorting
  -S                sort by file size, largest first
  -s, --size        print the allocated size of each file, in blocks

@@ -8,6 +8,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/Yash-Handa/logo-ls/ctw"
 	"github.com/pborman/getopt/v2"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -19,6 +20,8 @@ const (
 	flag_l uint = 1 << iota
 	flag_a
 	flag_alpha // sort in alphabetic order (default)
+	flag_i     // stop printing of icons
+	flag_c     // stop printing of colors
 	flag_D     // stop printing of git status
 	flag_A
 	flag_h
@@ -72,7 +75,9 @@ func main() {
 	f_A := getopt.BoolLong("almost-all", 'A', "do not list implied . and ..")
 
 	// disable Stuff
-	f_D := getopt.BoolLong("disable-git-status", 'D', "don't print git status of files")
+	f_D := getopt.BoolLong("disable-git-status", 'D', "don't print git status of files, In recursive -R this flag enables git-status")
+	f_c := getopt.BoolLong("disable-color", 'c', "don't color icons, filenames and git status (use this to print to a file)")
+	f_i := getopt.BoolLong("disable-icon", 'i', "don't print icons of the files")
 
 	// display flags
 	f_1 := getopt.Bool('1', "list one file per line.")
@@ -92,7 +97,7 @@ func main() {
 	f_t := getopt.Bool('t', "sort by modification time, newest first")
 
 	f_r := getopt.BoolLong("reverse", 'r', "reverse order while sorting")
-	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively")
+	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively, git-status is disabled by default")
 	f_T := getopt.EnumLong("time-style", 'T', []string{"Stamp", "StampMilli", "Kitchen", "ANSIC", "UnixDate", "RubyDate", "RFC1123", "RFC1123Z", "RFC3339", "RFC822", "RFC822Z", "RFC850"}, "Stamp", "time/date format with -l; see time-style below")
 
 	f_help := getopt.Bool('?', "display this help and exit")
@@ -166,8 +171,19 @@ func main() {
 	}
 
 	// set disable-git-status (-D) flag
-	if *f_D {
+	if *f_D && !*f_R || !*f_D && *f_R {
 		flagVector |= flag_D
+	}
+
+	// set disable-color (-c) flag
+	if *f_c {
+		flagVector |= flag_c
+		ctw.DisplayColor(false)
+	}
+
+	// set disable-icon (-i) flag
+	if *f_i {
+		flagVector |= flag_i
 	}
 
 	// set -1 flag
