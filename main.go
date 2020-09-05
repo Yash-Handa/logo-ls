@@ -297,9 +297,11 @@ func main() {
 	}
 
 	// process and display all files
-	io.Copy(os.Stdout, newDir_ArgFiles(args.files).print())
-	if len(args.files) > 0 && len(args.dirs) > 0 {
-		fmt.Println()
+	if len(args.files) > 0 {
+		io.Copy(os.Stdout, newDir_ArgFiles(args.files).print())
+		if len(args.dirs) > 0 {
+			fmt.Println()
+		}
 	}
 
 	// process and display all the dirs in arg
