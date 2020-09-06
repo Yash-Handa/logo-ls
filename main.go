@@ -134,7 +134,7 @@ func main() {
 
 	// if f_V is provided version will be printed and exit(0)
 	if *f_V {
-		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v1.1.0")
+		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v1.3.0")
 		os.Exit(osExitCode)
 	}
 
@@ -338,7 +338,7 @@ func main() {
 			}
 		}
 	}
-
+	fmt.Printf("\n\n")
 	os.Exit(osExitCode)
 }
 
