@@ -54,16 +54,14 @@ func (l *LongCTW) Flush(buf *bytes.Buffer) {
 	l.c[l.cols-2] = 1
 
 	for i, r := range l.d {
-		p := 0
 		f := true
 		for j, c := range r {
 			if (1<<j)&skipCol > 0 {
 				continue
 			}
 			if f == false {
-				p = 1
+				fmt.Fprintf(buf, "%s", brailEmpty)
 			}
-			fmt.Fprintf(buf, "%*s", p, "")
 
 			if j == l.cols-2 {
 				fmt.Fprintf(buf, "%s%*s%s", l.ic[i], l.c[j], c, white)

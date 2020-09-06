@@ -3,9 +3,10 @@ package ctw
 import "strings"
 
 var (
-	white string = "\033[38;2;255;255;255m"
-	green string = "\033[38;2;055;183;021m"
-	brown string = "\033[38;2;192;154;107m"
+	white      string = "\033[38;2;255;255;255m"
+	green      string = "\033[38;2;055;183;021m"
+	brown      string = "\033[38;2;192;154;107m"
+	brailEmpty string = "\u2800"
 )
 
 func DisplayColor(b bool) {
@@ -13,6 +14,12 @@ func DisplayColor(b bool) {
 		white = ""
 		green = ""
 		brown = ""
+	}
+}
+
+func DisplayBrailEmpty(b bool) {
+	if b == false {
+		brailEmpty = " "
 	}
 }
 

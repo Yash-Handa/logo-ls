@@ -188,6 +188,7 @@ func main() {
 	if *f_i {
 		flagVector |= flag_i
 		openDir = ""
+		ctw.DisplayBrailEmpty(false)
 	}
 
 	// set -1 flag
