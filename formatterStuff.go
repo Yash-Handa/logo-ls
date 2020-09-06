@@ -153,6 +153,14 @@ func getIcon(name, ext, indicator string) (icon, color string) {
 	switch indicator {
 	case "/":
 		// send dir related stuff
+		i, ok = Icon_Dir[strings.ToLower(name+ext)]
+		if ok {
+			break
+		}
+		if len(name) == 0 || '.' == name[0] {
+			i = iDef["hiddendir"]
+			break
+		}
 		i = iDef["dir"]
 	case "*":
 		// send executable related stuff
@@ -170,7 +178,7 @@ func getIcon(name, ext, indicator string) (icon, color string) {
 		}
 
 		if len(name) == 0 || '.' == name[0] {
-			i, ok = iDef["hiddenfile"]
+			i = iDef["hiddenfile"]
 			break
 		}
 		i = iDef["file"]

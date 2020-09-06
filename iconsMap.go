@@ -302,13 +302,27 @@ var iSet = map[string]*iInfo{
 	// "drawio":           {"\u", [3]uint8{255, 255, 255}},       // drawio
 	// "sas":              {"\u", [3]uint8{255, 255, 255}},       // sas
 	// "slug":             {"\u", [3]uint8{255, 255, 255}},       // slug
+
+	"dir-config":      {"\ue5fc", [3]uint8{32, 173, 194}},  // dir-config
+	"dir-controller":  {"\ue5fc", [3]uint8{255, 194, 61}},  // dir-controller
+	"dir-git":         {"\ue5fb", [3]uint8{250, 111, 66}},  // dir-git
+	"dir-github":      {"\ue5fd", [3]uint8{84, 110, 122}},  // dir-github
+	"dir-npm":         {"\ue5fa", [3]uint8{203, 56, 55}},   // dir-npm
+	"dir-include":     {"\uf756", [3]uint8{3, 155, 229}},   // dir-include
+	"dir-import":      {"\uf756", [3]uint8{175, 180, 43}},  // dir-import
+	"dir-upload":      {"\uf758", [3]uint8{250, 111, 66}},  // dir-upload
+	"dir-download":    {"\uf74c", [3]uint8{76, 175, 80}},   // dir-download
+	"dir-secure":      {"\uf74f", [3]uint8{249, 169, 60}},  // dir-secure
+	"dir-images":      {"\uf74e", [3]uint8{43, 150, 137}},  // dir-images
+	"dir-environment": {"\uf74e", [3]uint8{102, 187, 106}}, // dir-environment
 }
 
 // default icons in case nothing can be found
 var iDef = map[string]*iInfo{
 	"dir":        {"\uf74a", [3]uint8{224, 177, 77}},
 	"diropen":    {"\ufc6e", [3]uint8{224, 177, 77}},
-	"exe":        {"\uf713", [3]uint8{139, 199, 185}},
+	"hiddendir":  {"\uf755", [3]uint8{224, 177, 77}},
+	"exe":        {"\uf713", [3]uint8{76, 175, 80}},
 	"file":       {"\uf723", [3]uint8{65, 129, 190}},
 	"hiddenfile": {"\ufb12", [3]uint8{65, 129, 190}},
 }
