@@ -7,5 +7,7 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 ## Icon Set
 
 <div>
-  <img alt="icons" style="display:block; margin: auto" width="70%" title="Icon Set" src="/.github/images/icons.png">
+  <span align="center">
+  <img alt="icons" width="85%" title="Icon Set" src="/.github/images/icons.png">
+    </span>
 </div><br>
