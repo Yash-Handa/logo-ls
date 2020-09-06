@@ -8,6 +8,6 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 
 <div>
   <span align="center">
-  <img alt="icons" width="85%" title="Icon Set" src="/.github/images/icons.png">
+  <img alt="icons" title="Icon Set" src="/.github/images/icons.png">
     </span>
 </div><br>
