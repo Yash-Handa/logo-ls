@@ -2,6 +2,7 @@ package main
 
 var Icon_Ext = map[string]*iInfo{
 	"htm":               iSet["html"],
+	"html":              iSet["html"],
 	"xhtml":             iSet["html"],
 	"html_vm":           iSet["html"],
 	"asp":               iSet["html"],

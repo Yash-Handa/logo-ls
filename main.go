@@ -69,13 +69,15 @@ func set_osExitCode(c int) int {
 	return osExitCode
 }
 
+var openDir = iDef["diropen"].getColor(1) + iDef["diropen"].getGlyph() + "\033[38;2;255;255;255m" + " "
+
 func main() {
 	// content flags
 	f_a := getopt.BoolLong("all", 'a', "do not ignore entries starting with .")
 	f_A := getopt.BoolLong("almost-all", 'A', "do not list implied . and ..")
 
 	// disable Stuff
-	f_D := getopt.BoolLong("disable-git-status", 'D', "don't print git status of files, In recursive -R this flag enables git-status")
+	f_D := getopt.BoolLong("git-status", 'D', "print git status of files")
 	f_c := getopt.BoolLong("disable-color", 'c', "don't color icons, filenames and git status (use this to print to a file)")
 	f_i := getopt.BoolLong("disable-icon", 'i', "don't print icons of the files")
 
@@ -97,7 +99,7 @@ func main() {
 	f_t := getopt.Bool('t', "sort by modification time, newest first")
 
 	f_r := getopt.BoolLong("reverse", 'r', "reverse order while sorting")
-	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively, git-status is disabled by default")
+	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively")
 	f_T := getopt.EnumLong("time-style", 'T', []string{"Stamp", "StampMilli", "Kitchen", "ANSIC", "UnixDate", "RubyDate", "RFC1123", "RFC1123Z", "RFC3339", "RFC822", "RFC822Z", "RFC850"}, "Stamp", "time/date format with -l; see time-style below")
 
 	f_help := getopt.Bool('?', "display this help and exit")
@@ -171,7 +173,7 @@ func main() {
 	}
 
 	// set disable-git-status (-D) flag
-	if *f_D && !*f_R || !*f_D && *f_R {
+	if *f_D {
 		flagVector |= flag_D
 	}
 
@@ -179,11 +181,13 @@ func main() {
 	if *f_c {
 		flagVector |= flag_c
 		ctw.DisplayColor(false)
+		openDir = iDef["diropen"].getGlyph() + " "
 	}
 
 	// set disable-icon (-i) flag
 	if *f_i {
 		flagVector |= flag_i
+		openDir = ""
 	}
 
 	// set -1 flag
@@ -311,14 +315,14 @@ func main() {
 			if i > 0 {
 				fmt.Println()
 			}
-			fmt.Printf("%s:\n", v.Name())
+			fmt.Printf("%s:\n", openDir+v.Name())
 			newDirs_Recussion(v)
 		}
 	} else {
 		pName := len(dirs) > 1
 		for i, v := range args.dirs {
 			if pName {
-				fmt.Printf("%s:\n", v.Name())
+				fmt.Printf("%s:\n", openDir+v.Name())
 			}
 			d, err := newDir(v)
 			v.Close()

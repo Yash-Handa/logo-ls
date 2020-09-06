@@ -40,8 +40,6 @@ func TestFileIcons(t *testing.T) {
 				if d == i {
 					w.AddRow("    ", d.getGlyph(), f, "")
 					w.IconColor(d.getColor(1))
-					// w.AddRow("", "", "", "")
-					// w.IconColor("")
 				}
 			}
 			w.Flush(buf)
@@ -54,8 +52,6 @@ func TestFileIcons(t *testing.T) {
 				if d == i {
 					w.AddRow("    ", d.getGlyph(), e, "")
 					w.IconColor(d.getColor(1))
-					// w.AddRow("", "", "", "")
-					// w.IconColor("")
 				}
 			}
 			w.Flush(buf)
@@ -72,23 +68,27 @@ func TestIconDisplay(t *testing.T) {
 		terminalWidth = 80
 	}
 
-	//sorting alphabetically
-	ks := make([]string, 0)
-	for k := range iSet {
-		ks = append(ks, k)
-	}
-	sort.Strings(ks)
+	temp := [2]map[string]*iInfo{iSet, iDef}
 
-	// display icons
-	buf := bytes.NewBuffer([]byte("\n"))
-	w := ctw.New(terminalWidth)
-	for _, v := range ks {
-		w.AddRow("    ", iSet[v].getGlyph(), v, "")
-		w.IconColor(iSet[v].getColor(1))
-		// w.AddRow("", "", "", "")
-		// w.IconColor("")
+	for i, set := range temp {
+		t.Run(fmt.Sprintf("Icon Set %d", i+1), func(st *testing.T) {
+			//sorting alphabetically
+			ks := make([]string, 0)
+			for k := range set {
+				ks = append(ks, k)
+			}
+			sort.Strings(ks)
+
+			// display icons
+			buf := bytes.NewBuffer([]byte("\n"))
+			w := ctw.New(terminalWidth)
+			for _, v := range ks {
+				w.AddRow("    ", set[v].getGlyph(), v, "")
+				w.IconColor(set[v].getColor(1))
+			}
+			w.Flush(buf)
+			io.Copy(os.Stdout, buf)
+			fmt.Fprintln(os.Stdout)
+		})
 	}
-	w.Flush(buf)
-	io.Copy(os.Stdout, buf)
-	fmt.Fprintln(os.Stdout)
 }

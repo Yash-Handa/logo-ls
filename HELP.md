@@ -8,9 +8,7 @@ Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
                    don't color icons, filenames and git status (use this to
                    print to a file)
  -d, --directory   list directories themselves, not their contents
- -D, --disable-git-status
-                   don't print git status of files, In recursive -R this flag
-                   enables git-status
+ -D, --git-status  print git status of files
  -g                like -l, but do not list owner
  -G, --no-group    in a long listing, don't print group names
  -h, --human-readable
@@ -19,8 +17,7 @@ Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
                    don't print icons of the files
  -l                use a long listing format
  -o                like -l, but do not list group information
- -R, --recursive   list subdirectories recursively, git-status is disabled by
-                   default
+ -R, --recursive   list subdirectories recursively
  -r, --reverse     reverse order while sorting
  -S                sort by file size, largest first
  -s, --size        print the allocated size of each file, in blocks

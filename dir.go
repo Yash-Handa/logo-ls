@@ -56,7 +56,7 @@ func newDir(d *os.File) (*dir, error) {
 
 	// getting Git Status of the entire repository
 	var gitRepoStatus map[string]string // could be nil
-	if flagVector&flag_D == 0 {
+	if flagVector&flag_D > 0 {
 		gitRepoStatus = getFilesGitStatus(d.Name()) // returns map or nil
 	}
 
@@ -71,6 +71,12 @@ func newDir(d *os.File) (*dir, error) {
 		if flagVector&flag_s > 0 {
 			if s, ok := ds.Sys().(*syscall.Stat_t); ok {
 				t.info.blocks = s.Blocks
+			}
+		}
+		if flagVector&flag_i == 0 {
+			t.info.icon = iDef["diropen"].getGlyph()
+			if flagVector&flag_c == 0 {
+				t.info.iconColor = iDef["diropen"].getColor(1)
 			}
 		}
 	}
@@ -106,9 +112,9 @@ func newDir(d *os.File) (*dir, error) {
 		}
 
 		if flagVector&flag_i == 0 {
-			f.icon = "\uf15c"
-			if flagVector&flag_c == 0 {
-				f.iconColor = "\033[38;2;127;213;234m"
+			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)
+			if flagVector&flag_c != 0 {
+				f.iconColor = ""
 			}
 		}
 
@@ -154,6 +160,12 @@ func newDir(d *os.File) (*dir, error) {
 				t.parent.blocks = s.Blocks
 			}
 		}
+		if flagVector&flag_i == 0 {
+			t.parent.icon = iDef["diropen"].getGlyph()
+			if flagVector&flag_c == 0 {
+				t.parent.iconColor = iDef["diropen"].getColor(1)
+			}
+		}
 		t.files = append(t.files, t.parent)
 	}
 
@@ -185,6 +197,12 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 				f.blocks = s.Blocks
 			}
 		}
+		if flagVector&flag_i == 0 {
+			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)
+			if flagVector&flag_c != 0 {
+				f.iconColor = ""
+			}
+		}
 		t.files = append(t.files, f)
 	}
 	return t
@@ -209,7 +227,7 @@ func newDirs_Recussion(d *os.File) {
 		temp[i] = filepath.Join(d.Name(), v)
 	}
 	for _, v := range temp {
-		fmt.Printf("\n%s:\n", v)
+		fmt.Printf("\n%s:\n", openDir+v)
 		f, err := os.Open(v)
 		if err != nil {
 			log.Printf("cannot access %q: %v\n", v, err)

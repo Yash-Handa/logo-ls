@@ -146,3 +146,34 @@ func getSizeInFormate(b int64) string {
 	return fmt.Sprintf("%.1f%c",
 		float64(b)/float64(div), "KMGTPE"[exp])
 }
+
+func getIcon(name, ext, indicator string) (icon, color string) {
+	var i *iInfo
+	var ok bool
+	switch indicator {
+	case "/":
+		// send dir related stuff
+		i = iDef["dir"]
+	case "*":
+		// send executable related stuff
+		i = iDef["exe"]
+	default:
+		// send file related stuff
+		i, ok = Icon_FileName[strings.ToLower(name+ext)]
+		if ok {
+			break
+		}
+
+		i, ok = Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
+		if ok {
+			break
+		}
+
+		if len(name) == 0 || '.' == name[0] {
+			i, ok = iDef["hiddenfile"]
+			break
+		}
+		i = iDef["file"]
+	}
+	return i.getGlyph(), i.getColor(1)
+}

@@ -49,7 +49,7 @@ var iSet = map[string]*iInfo{
 	"cpp":              {"\ufb71", [3]uint8{2, 119, 189}},   // cpp
 	"go":               {"\ufcd1", [3]uint8{32, 173, 194}},  // go
 	"go-mod":           {"\ufcd1", [3]uint8{237, 80, 122}},  // go-mod
-	"python":           {"\uf81f", [3]uint8{247, 204, 58}},  // python
+	"python":           {"\uf81f", [3]uint8{52, 102, 143}},  // python
 	"python-misc":      {"\uf820", [3]uint8{130, 61, 28}},   // python-misc
 	"url":              {"\uf836", [3]uint8{66, 165, 245}},  // url
 	"console":          {"\uf68c", [3]uint8{250, 111, 66}},  // console
@@ -302,4 +302,13 @@ var iSet = map[string]*iInfo{
 	// "drawio":           {"\u", [3]uint8{255, 255, 255}},       // drawio
 	// "sas":              {"\u", [3]uint8{255, 255, 255}},       // sas
 	// "slug":             {"\u", [3]uint8{255, 255, 255}},       // slug
+}
+
+// default icons in case nothing can be found
+var iDef = map[string]*iInfo{
+	"dir":        {"\uf74a", [3]uint8{224, 177, 77}},
+	"diropen":    {"\ufc6e", [3]uint8{224, 177, 77}},
+	"exe":        {"\uf713", [3]uint8{139, 199, 185}},
+	"file":       {"\uf723", [3]uint8{65, 129, 190}},
+	"hiddenfile": {"\ufb12", [3]uint8{65, 129, 190}},
 }
