@@ -1,7 +1,9 @@
 ```txt
+List information about the FILEs with ICONS and GIT STATUS (the current dir 
+by default). Sort entries alphabetically if none of -tvSUX is specified.
 Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
  -1                list one file per line.
- -?                display this help and exit
+ -?, --help        display this help and exit
  -a, --all         do not ignore entries starting with .
  -A, --almost-all  do not list implied . and ..
  -c, --disable-color
@@ -30,16 +32,21 @@ Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
  -X                sort alphabetically by entry extension
 
 Possible value for --time-style (-T)
-ANSIC       "Mon Jan _2 15:04:05 2006"      
-UnixDate    "Mon Jan _2 15:04:05 MST 2006"  
-RubyDate    "Mon Jan 02 15:04:05 -0700 2006"
-RFC822      "02 Jan 06 15:04 MST"           
-RFC822Z     "02 Jan 06 15:04 -0700"         
-RFC850      "Monday, 02-Jan-06 15:04:05 MST"
-RFC1123     "Mon, 02 Jan 2006 15:04:05 MST" 
-RFC1123Z    "Mon, 02 Jan 2006 15:04:05 -0700"
-RFC3339     "2006-01-02T15:04:05Z07:00"     
-Kitchen     "3:04PM"                        
-Stamp       "Mon Jan _2 15:04:05"            [Default]
-StampMilli  "Jan _2 15:04:05.000"           
+ ANSIC       "Mon Jan _2 15:04:05 2006"      
+ UnixDate    "Mon Jan _2 15:04:05 MST 2006"  
+ RubyDate    "Mon Jan 02 15:04:05 -0700 2006"
+ RFC822      "02 Jan 06 15:04 MST"           
+ RFC822Z     "02 Jan 06 15:04 -0700"         
+ RFC850      "Monday, 02-Jan-06 15:04:05 MST"
+ RFC1123     "Mon, 02 Jan 2006 15:04:05 MST" 
+ RFC1123Z    "Mon, 02 Jan 2006 15:04:05 -0700"
+ RFC3339     "2006-01-02T15:04:05Z07:00"     
+ Kitchen     "3:04PM"                        
+ Stamp       "Mon Jan _2 15:04:05"            [Default]
+ StampMilli  "Jan _2 15:04:05.000"           
+
+Exit status:
+ 0  if OK,
+ 1  if minor problems (e.g., cannot access subdirectory),
+ 2  if serious trouble (e.g., cannot access command-line argument).
 ```

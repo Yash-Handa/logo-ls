@@ -102,7 +102,7 @@ func main() {
 	f_R := getopt.BoolLong("recursive", 'R', "list subdirectories recursively")
 	f_T := getopt.EnumLong("time-style", 'T', []string{"Stamp", "StampMilli", "Kitchen", "ANSIC", "UnixDate", "RubyDate", "RFC1123", "RFC1123Z", "RFC3339", "RFC822", "RFC822Z", "RFC850"}, "Stamp", "time/date format with -l; see time-style below")
 
-	f_help := getopt.Bool('?', "display this help and exit")
+	f_help := getopt.BoolLong("help", '?', "display this help and exit")
 	f_V := getopt.BoolLong("version", 'V', "output version information and exit")
 
 	// using getopt.Getopt instead of parse to provide custom err
@@ -115,26 +115,35 @@ func main() {
 
 	// if f_help is provided print help and exit(0)
 	if *f_help {
+		fmt.Println("List information about the FILEs with ICONS and GIT STATUS (the current dir \nby default). Sort entries alphabetically if none of -tvSUX is specified.")
+
 		getopt.PrintUsage(os.Stdout)
+
 		fmt.Println("\nPossible value for --time-style (-T)")
-		fmt.Printf("%-11s %-32q\n", "ANSIC", "Mon Jan _2 15:04:05 2006")
-		fmt.Printf("%-11s %-32q\n", "UnixDate", "Mon Jan _2 15:04:05 MST 2006")
-		fmt.Printf("%-11s %-32q\n", "RubyDate", "Mon Jan 02 15:04:05 -0700 2006")
-		fmt.Printf("%-11s %-32q\n", "RFC822", "02 Jan 06 15:04 MST")
-		fmt.Printf("%-11s %-32q\n", "RFC822Z", "02 Jan 06 15:04 -0700")
-		fmt.Printf("%-11s %-32q\n", "RFC850", "Monday, 02-Jan-06 15:04:05 MST")
-		fmt.Printf("%-11s %-32q\n", "RFC1123", "Mon, 02 Jan 2006 15:04:05 MST")
-		fmt.Printf("%-11s %-32q\n", "RFC1123Z", "Mon, 02 Jan 2006 15:04:05 -0700")
-		fmt.Printf("%-11s %-32q\n", "RFC3339", "2006-01-02T15:04:05Z07:00")
-		fmt.Printf("%-11s %-32q\n", "Kitchen", "3:04PM")
-		fmt.Printf("%-11s %-32q [Default]\n", "Stamp", "Mon Jan _2 15:04:05")
-		fmt.Printf("%-11s %-32q\n", "StampMilli", "Jan _2 15:04:05.000")
+		fmt.Printf(" %-11s %-32q\n", "ANSIC", "Mon Jan _2 15:04:05 2006")
+		fmt.Printf(" %-11s %-32q\n", "UnixDate", "Mon Jan _2 15:04:05 MST 2006")
+		fmt.Printf(" %-11s %-32q\n", "RubyDate", "Mon Jan 02 15:04:05 -0700 2006")
+		fmt.Printf(" %-11s %-32q\n", "RFC822", "02 Jan 06 15:04 MST")
+		fmt.Printf(" %-11s %-32q\n", "RFC822Z", "02 Jan 06 15:04 -0700")
+		fmt.Printf(" %-11s %-32q\n", "RFC850", "Monday, 02-Jan-06 15:04:05 MST")
+		fmt.Printf(" %-11s %-32q\n", "RFC1123", "Mon, 02 Jan 2006 15:04:05 MST")
+		fmt.Printf(" %-11s %-32q\n", "RFC1123Z", "Mon, 02 Jan 2006 15:04:05 -0700")
+		fmt.Printf(" %-11s %-32q\n", "RFC3339", "2006-01-02T15:04:05Z07:00")
+		fmt.Printf(" %-11s %-32q\n", "Kitchen", "3:04PM")
+		fmt.Printf(" %-11s %-32q [Default]\n", "Stamp", "Mon Jan _2 15:04:05")
+		fmt.Printf(" %-11s %-32q\n", "StampMilli", "Jan _2 15:04:05.000")
+
+		fmt.Println("\nExit status:")
+		fmt.Println(" 0  if OK,")
+		fmt.Println(" 1  if minor problems (e.g., cannot access subdirectory),")
+		fmt.Println(" 2  if serious trouble (e.g., cannot access command-line argument).")
 		os.Exit(osExitCode)
 	}
 
 	// if f_V is provided version will be printed and exit(0)
 	if *f_V {
 		fmt.Printf("logo-ls %s\nCopyright (c) 2020 Yash Handa\nLicense MIT <https://opensource.org/licenses/MIT>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n", "v1.3.0")
+		fmt.Println("\nWritten by Yash Handa")
 		os.Exit(osExitCode)
 	}
 
@@ -338,7 +347,6 @@ func main() {
 			}
 		}
 	}
-	fmt.Printf("\n\n")
 	os.Exit(osExitCode)
 }
 

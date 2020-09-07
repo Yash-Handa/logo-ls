@@ -1,0 +1,10 @@
+[ENVIRONMENT]
+ For correct display of icons the terminal should support UTF-8 encoding
+ with NERD FONT <https://github.com/ryanoasis/nerd-fonts> patched font.
+ For correct display of colors the terminal should support TRUE COLOR.
+
+[REPORTING BUGS]
+Report Bugs to <https://github.com/Yash-Handa/logo-ls/issues>
+
+[SEE ALSO]
+Full documentation with examples at: <https://www.github.com/Yash-Handa/logo-ls>

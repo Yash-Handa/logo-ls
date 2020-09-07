@@ -1,9 +1,17 @@
 #!/bin/bash
 
+# build the binery
+go build
+
 # Update HELP.md file
 echo -e "\`\`\`txt" > HELP.md
-go run . -? >> HELP.md
+./logo-ls -? >> HELP.md
 echo -e "\`\`\`" >> HELP.md
 exec git add HELP.md
+
+# Update logo-ls.1.gz
+help2man -N -I logo-ls.h2m -o logo-ls.1 ./logo-ls
+gzip -f logo-ls.1
+exec git add logo-ls.1.gz
 
 exit 0
