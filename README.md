@@ -1,5 +1,12 @@
 # logo-ls
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+![cli](https://img.shields.io/badge/-Build%20for%20CLI-000000?style=for-the-badge&logo=Powershell&logoColor=ffffff)
+
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/Yash-Handa/logo-ls?style=flat-square)
+[![HitCount](http://hits.dwyl.com/{Yash-Handa}/{logo-ls}.svg)](http://hits.dwyl.com/{Yash-Handa}/{logo-ls})
+
 modern ls command with vscode like file logos. Written in Golang
 
 Command and Arguments supported are listed in [HELP.md](/HELP.md)
