@@ -2,7 +2,7 @@
 # Make sure to check the documentation at http://goreleaser.com
 
 env_files:
-  github_token: .gh_token.env
+  github_token: .gh_token
 
 project_name: logo-ls
 
@@ -66,6 +66,10 @@ signs:
     args: ["-u", "0xD9498B225223344C0205FDF528182066BCACCCB2", "--output", "${signature}", "--detach-sign", "${artifact}"]
     artifacts: checksum
 
+release:
+  github:
+    owner: Yash-Handa
+    name: logo-ls
 
 snapshot:
   name_template: "{{ .Tag }}-next"
