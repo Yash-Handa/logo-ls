@@ -10,8 +10,8 @@ echo -e "\`\`\`" >> HELP.md
 exec git add HELP.md
 
 # Update logo-ls.1.gz
-help2man -N -I logo-ls.h2m -o logo-ls.1 ./logo-ls
-gzip -f logo-ls.1
+exec help2man -N -I logo-ls.h2m -o logo-ls.1 ./logo-ls
+exec gzip -f logo-ls.1
 exec git add logo-ls.1.gz
 
 exit 0
