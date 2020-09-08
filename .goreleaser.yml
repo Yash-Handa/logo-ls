@@ -2,7 +2,7 @@
 # Make sure to check the documentation at http://goreleaser.com
 
 env_files:
-  github_token: .gh_token
+  github_token: '{{ .Env.PWD }}.gh_token'
 
 project_name: logo-ls
 
@@ -81,3 +81,21 @@ changelog:
       - '^docs:'
       - '^test:'
       - '(?i)update Readme.md'
+
+nfpms:
+  - 
+    file_name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    package_name: logo-ls
+    homepage: https://github.com/Yash-Handa/logo-ls
+    description: ls command with icons and git integration. Written in Golang
+    maintainer: Yash Handa <yashhanda7@yahoo.com>
+    license: MIT
+    formats:
+    - deb
+    - rpm
+    dependencies:
+    - git
+    recommends:
+    - golang
+    files:
+      "logo-ls.1.gz": "/usr/share/man/man1/logo-ls.1.gz"
