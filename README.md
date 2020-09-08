@@ -5,6 +5,8 @@
 # logo-ls
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/Yash-Handa/logo-ls?style=flat-square)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Yash-Handa/logo-ls?sort=semver&style=flat-square)
+![PRs](https://img.shields.io/badge/PRs-welcome-56cc14?style=flat-square)
 [![HitCount](http://hits.dwyl.com/{Yash-Handa}/{logo-ls}.svg)](http://hits.dwyl.com/{Yash-Handa}/{logo-ls})
 
 modern ls command with vscode like file logos. Written in Golang
