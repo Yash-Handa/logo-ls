@@ -17,3 +17,9 @@
 # Do not commit the executable
 logo-ls
 build/
+
+# distribution directory
+dist
+
+# env stuff
+*.env

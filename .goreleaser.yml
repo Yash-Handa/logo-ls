@@ -1,0 +1,78 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+
+env_files:
+  github_token: .gh_token.env
+
+project_name: logo-ls
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod download
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    # supported OS
+    goos:
+      - linux
+      # - windows
+      - darwin
+    # supported ARCH
+    goarch:
+      - amd64
+      - 386
+      - arm64
+      - arm
+    # OS ARCH combinations to ignore
+    ignore:
+      - goos: darwin
+        goarch: 386
+    # Set the modified timestamp on the output binaries to the latest commit time.
+    # Required for producing Reproducible builds
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+    # override archiving [default tar.gz]
+    format_overrides:
+      - goos: windows
+        format: zip
+    # wrap the content of archive in a dir
+    #so when extracting the content will be in a dir
+    wrap_in_directory: true
+    # files to be included in the archive + binary
+    files:
+      - LICENSE
+      - HELP.md
+      - logo-ls.1.gz
+      # - CHANGELOG.md
+
+checksum:
+  name_template: '{{ .ProjectName }}_SHA512sums.txt'
+  algorithm: sha512
+
+signs:
+  - 
+    cmd: gpg2
+    # sign the checksum with Yash Handa (logo-ls) <yashhanda7@yahoo.com>
+    args: ["-u", "0xD9498B225223344C0205FDF528182066BCACCCB2", "--output", "${signature}", "--detach-sign", "${artifact}"]
+    artifacts: checksum
+
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

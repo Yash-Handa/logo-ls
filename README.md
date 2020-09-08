@@ -11,6 +11,44 @@ modern ls command with vscode like file logos. Written in Golang
 
 Command and Arguments supported are listed in [HELP.md](/HELP.md)
 
+## Check the downloaded Resource
+
+receive public key of the signing party
+
+```cmd
+$ gpg2 --keyid-format long --keyserver keyserver.ubuntu.com --recv-keys 0x28182066bcacccb2
+
+gpg: key 28182066BCACCCB2: "Yash Handa (logo-ls) <yashhanda7@yahoo.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
+check the signature on logo-ls_SHA512sums.txt
+
+```cmd
+$ gpg2 --keyid-format long --verify logo-ls_SHA512sums.txt.sig logo-ls_SHA512sums.txt
+
+gpg: Signature made Tue 08 Sep 2020 10:21:52 PM IST
+gpg:                using RSA key D9498B225223344C0205FDF528182066BCACCCB2
+gpg: Good signature from "Yash Handa (logo-ls) <yashhanda7@yahoo.com>" [ultimate]
+```
+
+A **Good** signature means that the checked file was definitely signed by the owner of the keyfile stated (if they didn’t match, the signature would be reported as **BAD**)
+
+Now use `logo-ls_SHA512sums.txt` file to verify the authenticity of the resource downloaded
+
+```cmd
+$ sha512sum -c logo-ls_SHA512sums.txt 2>&1 | grep OK
+
+logo-ls_Linux_x86_64.tar.gz: OK
+logo-ls_Linux_arm64.tar.gz: OK
+logo-ls_Darwin_x86_64.tar.gz: OK
+logo-ls_Linux_i386.tar.gz: OK
+logo-ls_Linux_armv6.tar.gz: OK
+```
+
+Note: The downloaded resources to verify and `logo-ls_SHA512sums.txt` should be in the same directory
+
 ## Example Commands
 
 <div>
