@@ -76,3 +76,4 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+      - '(?i)update Readme.md'
