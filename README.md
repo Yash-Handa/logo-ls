@@ -37,9 +37,9 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
   - [Combination of flags](#combination-of-flags)
   - [Multiple Files and Directories](#multiple-files-and-directories)
 - [Installation](#installation)
-  - [Debian (.deb package)](#)
-  - [Red Hat (.rpm package)](#)
-  - [MacOS (Darwin)](#macos-(darwin))
+  - [Debian (.deb package)](#debian-deb-package)
+  - [Red Hat (.rpm package)](#red-hat-rpm-package)
+  - [MacOS (Darwin)](#macos-darwin)
   - [Linux](#linux)
   - [Check the downloaded Resource](#check-the-downloaded-resource) 
 - [Recommended configurations](#recommended-configurations)
@@ -50,6 +50,8 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 - [License](#license)
 
 ## Features
+
+[^TOC](#table-of-contents)
 
 This project is build to add esthetics to ls(coreutiles) command
 
@@ -63,6 +65,8 @@ This project is build to add esthetics to ls(coreutiles) command
 This project is highly inspired by [ls(coreutiles)](https://www.gnu.org/software/coreutils/manual/html_node/ls-invocation.html#ls-invocation) and [color ls](https://github.com/athityakumar/colorls). The project tries to find a happy path between speed and aesthetics.
 
 ## Usage
+
+[^TOC](#table-of-contents)
 
 All supported flags can be found by using help flag `$ logo-ls -?`. The same has been provided as [HELP.md](/HELP.md).
 
@@ -109,6 +113,8 @@ You can provide multiple files and directories as command argument [default to P
 
 ## Installation
 
+[^TOC](#table-of-contents)
+
 Installation is very easy and straight forward with many options to choose from.
 
 As of now almost all installation methods require downloading resources from the Github Release page of the project, so to be a bit more secure consider **Checking the Signature** of `logo-ls_SHA512sums.txt` text file and then use this file to check weather the resource have been tampered. This complete process is explained in more detail in [Check the downloaded Resource](#check-the-downloaded-resource) section below. (This is a recommended step and not at all required)
@@ -121,7 +127,7 @@ If you are on Debian or any other Debian based distribution then installation is
 
 Download the `.deb` package from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases). Available OS_Architectures include: `i386`, `amd64`, `arm64` and `armV6`. Check your downloaded resource(s) if you like.
 
-### Step 2
+#### Step 2
 
 Use the `dpkg -i path/to/downloaded/resource/` to install the binary and the manpage
 
@@ -133,7 +139,7 @@ If you are on Red Hat or any other Red Hat based distribution (like fedora) then
 
 Download the `.rpm` package from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases). Available OS_Architectures include: `i386`, `amd64`, `arm64` and `armV6`. Check your downloaded resource(s) if you like.
 
-### Step 2
+#### Step 2
 
 Use the `rpm -i path/to/downloaded/resource/` to install the binary and the manpage
 
@@ -257,9 +263,11 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 ## Recommended configurations
 
+[^TOC](#table-of-contents)
+
 ## Updating
 
-## Uninstallation
+[^TOC](#table-of-contents)
 
 ## Example Commands
 
@@ -307,6 +315,8 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 ## Icon Set
 
+[^TOC](#table-of-contents)
+
 <div>
   <span align="center">
   <img alt="icons" title="Icon Set" src="/.github/images/icons.png">
@@ -315,4 +325,8 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 ## Contributing
 
+[^TOC](#table-of-contents)
+
 ## License
+
+[^TOC](#table-of-contents)
