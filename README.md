@@ -15,6 +15,12 @@
 
 modern ls command with beautiful Icons and Git Integrations . Written in Golang
 
+<div>
+  <span align="center">
+  <img alt="logo-ls" title="logo-ls" src="/.github/images/ls.png">
+    </span>
+</div><br>
+
 Command and Arguments supported are listed in [HELP.md](/HELP.md)
 
 ## Table of contents
@@ -77,18 +83,67 @@ The project also has its manpage which can be accessed by `man logo-ls`
 Almost all flags are same as that of the classic ls command and behave similarly. The project can be used as a drop-in replacement for the ls(coreutiles)
 
 - With `-1`: List one entry per line
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -1" title="logo-ls -1" src="/.github/images/ls-1.png">
+    </span>
+</div><br>
+
 - With `-a` (or) `--all` : Does not ignore entries starting with '.'
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -a" title="logo-ls -a" src="/.github/images/ls-a.png">
+    </span>
+</div><br>
+
 - With `-A` (or) `--almost-all` : Does not ignore entries starting with '.', except `./` and `../`
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -A" title="logo-ls -A" src="/.github/images/ls-A.png">
+    </span>
+</div><br>
+
 - With `-D` (or) `--git-status`: Add Git Status to the listed Files and Directory
   - *Note*: As much I would love to make this the default behavior of the command but showing git status is an intensive task and may slow (a tiny bit) the command itself. If you want you can make alias to the command with `-D` applied to it.
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -D" title="logo-ls -D" src="/.github/images/ls-D.png">
+    </span>
+</div><br>
+
 - With `-l`: Shows in long listing format
   other similar commands are:
   - `-o`: like `-l`, but do not list group information
   - `-g`: like `-l`, but do not list owner
   - `-G` (or) `--no-group`: in a long listing, don't print group names
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -l" title="logo-ls -l" src="/.github/images/ls-l.png">
+    </span>
+</div><br>
+
 - With `-R` (or) `--recursive`: list subdirectories recursively
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -R" title="logo-ls -R" src="/.github/images/ls-R.png">
+    </span>
+</div><br>
+
 - With `-?` (or) `--help`: print the help message
   - similar message can be found at [HELP.md](/HELP.md).
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -?" title="logo-ls -?" src="/.github/images/ls-h.png">
+    </span>
+</div><br>
+
 - **Sorting**: There are many sorting flags available [default is *alphabetic order*]
   - With `-t`: sort by modification time, newest first
   - With `-S`: sort by file size, largest first
@@ -96,10 +151,38 @@ Almost all flags are same as that of the classic ls command and behave similarly
   - With `-U`: do not sort; list entries in directory order
   - With `-v`: natural sort of (version) numbers within text
   - With `-r` (or) `-reverse`: reverse order while sorting
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -X" title="logo-ls -X" src="/.github/images/ls-X.png">
+    </span>
+</div><br>
+
 - With `-T` (or) `--time-style=value`: set time/date format in long formats (`-l`, `-o`, `-g`). There are many options to chose from all are listed in [HELP.md](/HELP.md).
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -T" title="logo-ls -T" src="/.github/images/ls-T.png">
+    </span>
+</div><br>
+
 - With `-i` (or) `--disable-icon`: don't print icons of the files
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -i" title="logo-ls -i" src="/.github/images/ls-i.png">
+    </span>
+</div><br>
+
 - With `-c` (or) `--disable-color`: don't color icons, filenames and git status
   - *Note*: use a combination of `-ic` to print output to a file `$ logo-ls -ic > t.txt`
+
+<div>
+  <span align="center">
+  <img alt="logo-ls -c" title="logo-ls -c" src="/.github/images/ls-c.png">
+    </span>
+</div><br>
+  
 
 For all available commands see manpage or [HELP.md](/HELP.md)
 
@@ -107,9 +190,21 @@ For all available commands see manpage or [HELP.md](/HELP.md)
 
 This project uses [getopt](https://github.com/pborman/getopt) which is a golang variant of the classic getopt utility used in ls(coreutiles). Thus any combination of flags are possible and can be used.
 
+<div>
+  <span align="center">
+  <img alt="logo-ls with flag combination" title="logo-ls with flag combination" src="/.github/images/ls-AshDt.png">
+    </span>
+</div><br>
+
 ### Multiple Files and Directories
 
 You can provide multiple files and directories as command argument [default to PWD] and all will be displayed accordingly.
+
+<div>
+  <span align="center">
+  <img alt="logo-ls  with multiple files" title="logo-ls with multiple files" src="/.github/images/ls multi.png">
+    </span>
+</div><br>
 
 ## Prerequisites
 
@@ -292,50 +387,6 @@ alias illg='logo-ls -alD'
 [:arrow_up: TOC](#table-of-contents)
 
 As of now Updating is exactly similar as installation for [Debian (.deb package)](#debian-deb-package), [Red Hat (.rpm package)](#red-hat-rpm-package), [MacOS (Darwin)](#macos-darwin) and [Linux](#linux)
-
-## Example Commands
-
-<div>
-  <span align="center">
-  <img alt="logo-ls" title="logo-ls" src="/.github/images/ls.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -aD" title="logo-ls -aD" src="/.github/images/ls-aD.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -alhD" title="logo-ls -alhD" src="/.github/images/ls-alhD.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -1Dhs" title="logo-ls -1Dhs" src="/.github/images/ls-1Dhs.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -RD" title="logo-ls -RD" src="/.github/images/ls-RD.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -a" title="logo-ls -a" src="/.github/images/ls-a.png">
-    </span>
-</div><br>
-
-<div>
-  <span align="center">
-  <img alt="logo-ls -oahd -T Kitchen" title="logo-ls -oahd -T Kitchen" src="/.github/images/ls-oahD.png">
-    </span>
-</div><br>
 
 ## Icon Set
 
