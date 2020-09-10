@@ -36,6 +36,7 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
     - `-c` (or) `--disable-color`
   - [Combination of flags](#combination-of-flags)
   - [Multiple Files and Directories](#multiple-files-and-directories)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [Debian (.deb package)](#debian-deb-package)
   - [Red Hat (.rpm package)](#red-hat-rpm-package)
@@ -44,7 +45,6 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
   - [Check the downloaded Resource](#check-the-downloaded-resource) 
 - [Recommended configurations](#recommended-configurations)
 - [Updating](#updating)
-- [Uninstallation](#uninstallation)
 - [Icon Set](#icon-set)
 - [Contributing](#contributing)
 - [License](#license)
@@ -110,6 +110,16 @@ This project uses [getopt](https://github.com/pborman/getopt) which is a golang 
 ### Multiple Files and Directories
 
 You can provide multiple files and directories as command argument [default to PWD] and all will be displayed accordingly.
+
+## Prerequisites
+
+[^TOC](#table-of-contents)
+
+For proper working of `logo-ls` the following should be set
+
+- **UTF-8**: The terminal should be UTF-8 encoded (Can display Unicode-Code Point)
+- **True Color** Support: The terminal can display color (16 Million Colors). for more information of True Color and supported Terminals [see here](https://gist.github.com/XVilka/8346728)
+- **Nerd Fonts**: Nerd fonts are required to display Icons on screen. Basically Nerd Fonts patches your current font i.e., the last few unicode points (approx 2,824 out of 143,859) in the font are replaced with nerdy icons. The complete patching process is given [here](https://github.com/ryanoasis/nerd-fonts)
 
 ## Installation
 
@@ -265,7 +275,21 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 [^TOC](#table-of-contents)
 
+To add some short command (say, `ils` or `ls`) with some flag options by default, add this to your shell configuration file (`~/.bashrc`, `~/.zshrc`, etc.) :
+
+```bash
+alias ils='logo-ls'
+alias ila='logo-ls -A'
+alias ill='logo-ls -al'
+# equivalents with Git Status on by Default
+alias ilsg='logo-ls -D'
+alias ilag='logo-ls -AD'
+alias illg='logo-ls -alD'
+```
+
 ## Updating
+
+As of now Updating is exactly similar as installation for [Debian (.deb package)](#debian-deb-package), [Red Hat (.rpm package)](#red-hat-rpm-package), [MacOS (Darwin)](#macos-darwin) and [Linux](#linux)
 
 [^TOC](#table-of-contents)
 
@@ -327,6 +351,14 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 [^TOC](#table-of-contents)
 
+The project is always open to contributions. Especially for:
+
+- More Icons
+- Better ways to distribute software
+- Translations to other Languages (linguistic)
+
 ## License
 
 [^TOC](#table-of-contents)
+
+The project is licensed under **MIT**. The Licence is available [here](/LICENSE).
