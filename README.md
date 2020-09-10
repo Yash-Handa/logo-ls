@@ -55,11 +55,11 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 
 This project is build to add esthetics to ls(coreutiles) command
 
-- Over 250+ icons
+- Over 250+ icons :sunglasses:
 - Supporting 600+ files, extensions and directories
 - 16 Million, true colors supported
 - Git Status Integration
-- Near native speed. (thanks to Golang)
+- :racehorse: Near native speed. (thanks to Golang)
 - Language agnostic binaries
 
 This project is highly inspired by [ls(coreutiles)](https://www.gnu.org/software/coreutils/manual/html_node/ls-invocation.html#ls-invocation) and [color ls](https://github.com/athityakumar/colorls). The project tries to find a happy path between speed and aesthetics.
