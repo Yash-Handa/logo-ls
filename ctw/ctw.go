@@ -1,3 +1,4 @@
+// ctw is a custom tab writter package build to correctly display icons and colors for color-ls
 package ctw
 
 import (
