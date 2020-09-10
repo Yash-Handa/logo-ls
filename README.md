@@ -51,7 +51,7 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 
 ## Features
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 This project is build to add esthetics to ls(coreutiles) command
 
@@ -66,7 +66,7 @@ This project is highly inspired by [ls(coreutiles)](https://www.gnu.org/software
 
 ## Usage
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 All supported flags can be found by using help flag `$ logo-ls -?`. The same has been provided as [HELP.md](/HELP.md).
 
@@ -113,17 +113,17 @@ You can provide multiple files and directories as command argument [default to P
 
 ## Prerequisites
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 For proper working of `logo-ls` the following should be set
 
 - **UTF-8**: The terminal should be UTF-8 encoded (Can display Unicode-Code Point)
 - **True Color** Support: The terminal can display color (16 Million Colors). for more information of True Color and supported Terminals [see here](https://gist.github.com/XVilka/8346728)
-- **Nerd Fonts**: Nerd fonts are required to display Icons on screen. Basically Nerd Fonts patches your current font i.e., the last few unicode points (approx 2,824 out of 143,859) in the font are replaced with nerdy icons. The complete patching process is given [here](https://github.com/ryanoasis/nerd-fonts)
+- **Nerd Fonts**: Nerd fonts are required to display Icons on screen. Basically Nerd Fonts patches your current font i.e., the last few unicode points (approx 2,824 out of 143,859) in the font are replaced with nerdy icons :nerd_face:. The complete patching process is given [here](https://github.com/ryanoasis/nerd-fonts)
 
 ## Installation
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 Installation is very easy and straight forward with many options to choose from.
 
@@ -273,7 +273,7 @@ logo-ls_Linux_armv6.tar.gz: OK
 
 ## Recommended configurations
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 To add some short command (say, `ils` or `ls`) with some flag options by default, add this to your shell configuration file (`~/.bashrc`, `~/.zshrc`, etc.) :
 
@@ -289,9 +289,9 @@ alias illg='logo-ls -alD'
 
 ## Updating
 
-As of now Updating is exactly similar as installation for [Debian (.deb package)](#debian-deb-package), [Red Hat (.rpm package)](#red-hat-rpm-package), [MacOS (Darwin)](#macos-darwin) and [Linux](#linux)
+[:arrow_up: TOC](#table-of-contents)
 
-[^TOC](#table-of-contents)
+As of now Updating is exactly similar as installation for [Debian (.deb package)](#debian-deb-package), [Red Hat (.rpm package)](#red-hat-rpm-package), [MacOS (Darwin)](#macos-darwin) and [Linux](#linux)
 
 ## Example Commands
 
@@ -339,7 +339,7 @@ As of now Updating is exactly similar as installation for [Debian (.deb package)
 
 ## Icon Set
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 <div>
   <span align="center">
@@ -349,7 +349,7 @@ As of now Updating is exactly similar as installation for [Debian (.deb package)
 
 ## Contributing
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 The project is always open to contributions. Especially for:
 
@@ -359,6 +359,6 @@ The project is always open to contributions. Especially for:
 
 ## License
 
-[^TOC](#table-of-contents)
+[:arrow_up: TOC](#table-of-contents)
 
 The project is licensed under **MIT**. The Licence is available [here](/LICENSE).
