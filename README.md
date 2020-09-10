@@ -37,6 +37,11 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
   - [Combination of flags](#combination-of-flags)
   - [Multiple Files and Directories](#multiple-files-and-directories)
 - [Installation](#installation)
+  - [Debian (.deb package)](#)
+  - [Red Hat (.rpm package)](#)
+  - [MacOS (Darwin)](#macos-(darwin))
+  - [Linux](#linux)
+  - [Check the downloaded Resource](#check-the-downloaded-resource) 
 - [Recommended configurations](#recommended-configurations)
 - [Updating](#updating)
 - [Uninstallation](#uninstallation)
@@ -102,9 +107,117 @@ This project uses [getopt](https://github.com/pborman/getopt) which is a golang 
 
 You can provide multiple files and directories as command argument [default to PWD] and all will be displayed accordingly.
 
+## Installation
+
+Installation is very easy and straight forward with many options to choose from.
+
+As of now almost all installation methods require downloading resources from the Github Release page of the project, so to be a bit more secure consider **Checking the Signature** of `logo-ls_SHA512sums.txt` text file and then use this file to check weather the resource have been tampered. This complete process is explained in more detail in [Check the downloaded Resource](#check-the-downloaded-resource) section below. (This is a recommended step and not at all required)
+
+### Debian (.deb package)
+
+If you are on Debian or any other Debian based distribution then installation is simple.
+
+#### Step 1
+
+Download the `.deb` package from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases). Available OS_Architectures include: `i386`, `amd64`, `arm64` and `armV6`. Check your downloaded resource(s) if you like.
+
+### Step 2
+
+Use the `dpkg -i path/to/downloaded/resource/` to install the binary and the manpage
+
+### Red Hat (.rpm package)
+
+If you are on Red Hat or any other Red Hat based distribution (like fedora) then installation is simple.
+
+#### Step 1
+
+Download the `.rpm` package from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases). Available OS_Architectures include: `i386`, `amd64`, `arm64` and `armV6`. Check your downloaded resource(s) if you like.
+
+### Step 2
+
+Use the `rpm -i path/to/downloaded/resource/` to install the binary and the manpage
+
+### MacOS (Darwin)
+
+To install `logo-ls` on darwin you have to download the binary. Support for Homebrew will come soon
+
+#### Step 1
+
+Download `logo-ls_Darwin_x86_64.tar.gz` from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases).
+
+#### Step 2
+
+Extract a gzipped archive in the current directory.
+
+```cmd
+$ tar -xzf logo-ls_Darwin_x86_64.tar.gz
+```
+
+This will produce `logo-ls_Darwin_x86_64` directory in the current directory with the following files: `HELP.md`, `LICENSE`, `logo-ls` and `logo-ls.1.gz`
+
+#### Step 3
+
+Install the binary `logo-ls` by placing it in `/usr/local/bin`
+
+```cmd
+$ cd logo-ls_Darwin_x86_64
+$ sudo cp logo-ls /usr/local/bin
+```
+
+#### Step 4
+
+If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/share/man/man1/`
+
+```cmd
+$ sudo cp logo-ls.1.gz /usr/share/man/man1/
+```
+
+### Linux
+
+To install `logo-ls` on any other Linux Distribution you have to download the binary.
+
+#### Step 1
+
+Download the `.tar.gz` archive from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases). Available OS_Arch include: `i386`, `x86_64` (`amd64`), `arm64` and `armV6`. Check your downloaded resource(s) if you like.
+
+#### Step 2
+
+Extract a gzipped archive in the current directory.
+
+```cmd
+$ tar -xzf logo-ls_Linux_[ARCH].tar.gz
+```
+
+This will produce `logo-ls_Linux_[ARCH]` directory in the current directory with the following files: `HELP.md`, `LICENSE`, `logo-ls` and `logo-ls.1.gz`
+
+#### Step 3
+
+Install the binary `logo-ls` by placing it in `/usr/local/bin`
+
+```cmd
+$ cd logo-ls_Linux_[ARCH]
+$ sudo cp logo-ls /usr/local/bin
+```
+
+#### Step 4
+
+If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/share/man/man1/`
+
+```cmd
+$ sudo cp logo-ls.1.gz /usr/share/man/man1/
+```
+
 ### Check the downloaded Resource
 
-receive public key of the signing party
+After downloading the Resource(s) from the [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases) follow the bellow steps to check its authenticity.
+
+#### Step 1
+
+Download `logo-ls_SHA512sums.txt.sig` and `logo-ls_SHA512sums.txt` from [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases) and place them in the same directory as of the downloaded resource(s)
+
+#### Step 2
+
+Receive the public key of the signing party from `keyserver.ubuntu.com` server. This will add the developer's public key to your `keyring`.
 
 ```cmd
 $ gpg2 --keyid-format long --keyserver keyserver.ubuntu.com --recv-keys 0x28182066bcacccb2
@@ -113,6 +226,8 @@ gpg: key 28182066BCACCCB2: "Yash Handa (logo-ls) <yashhanda7@yahoo.com>" not cha
 gpg: Total number processed: 1
 gpg:              unchanged: 1
 ```
+
+#### Step 3
 
 check the signature on logo-ls_SHA512sums.txt
 
@@ -126,7 +241,9 @@ gpg: Good signature from "Yash Handa (logo-ls) <yashhanda7@yahoo.com>" [ultimate
 
 A **Good** signature means that the checked file was definitely signed by the owner of the keyfile stated (if they didn’t match, the signature would be reported as **BAD**)
 
-Now use `logo-ls_SHA512sums.txt` file to verify the authenticity of the resource downloaded
+#### Step 4
+
+Use `logo-ls_SHA512sums.txt` file to verify the authenticity of the downloaded resource(s)
 
 ```cmd
 $ sha512sum -c logo-ls_SHA512sums.txt 2>&1 | grep OK
@@ -137,8 +254,6 @@ logo-ls_Darwin_x86_64.tar.gz: OK
 logo-ls_Linux_i386.tar.gz: OK
 logo-ls_Linux_armv6.tar.gz: OK
 ```
-
-Note: The downloaded resources to verify and `logo-ls_SHA512sums.txt` should be in the same directory
 
 ## Recommended configurations
 
