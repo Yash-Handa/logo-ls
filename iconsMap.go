@@ -163,6 +163,20 @@ var iSet = map[string]*iInfo{
 	"stryker":          {"\uf05b", [3]uint8{239, 83, 80}},   // stryker
 	"modernizr":        {"\ue720", [3]uint8{234, 72, 99}},   // modernizr
 	"roadmap":          {"\ufb6d", [3]uint8{48, 166, 154}},  // roadmap
+	"debian":           {"\uf306", [3]uint8{211, 61, 76}},   // debian
+	"ubuntu":           {"\uf31c", [3]uint8{214, 73, 53}},   // ubuntu
+	"arch":             {"\uf303", [3]uint8{33, 142, 202}},  // arch
+	"redhat":           {"\uf316", [3]uint8{231, 61, 58}},   // redhat
+	"gentoo":           {"\uf30d", [3]uint8{148, 141, 211}}, // gentoo
+	"linux":            {"\ue712", [3]uint8{238, 207, 55}},  // linux
+	"raspberry-pi":     {"\uf315", [3]uint8{208, 60, 76}},   // raspberry-pi
+	"manjaro":          {"\uf312", [3]uint8{73, 185, 90}},   // manjaro
+	"opensuse":         {"\uf314", [3]uint8{111, 180, 36}},  // opensuse
+	"fedora":           {"\uf30a", [3]uint8{52, 103, 172}},  // fedora
+	"freebsd":          {"\uf30c", [3]uint8{175, 44, 42}},   // freebsd
+	"centOS":           {"\uf304", [3]uint8{157, 83, 135}},  // centOS
+	"alpine":           {"\uf300", [3]uint8{14, 87, 123}},   // alpine
+	"mint":             {"\uf30f", [3]uint8{125, 190, 58}},  // mint
 	"pug":              {"\ue60e", [3]uint8{239, 204, 163}}, // pug (Not supported by nerdFont)
 	"blink":            {"\uf72a", [3]uint8{249, 169, 60}},  // blink (The Foundry Nuke) (Not supported by nerdFont)
 	"postcss":          {"\uf81b", [3]uint8{244, 68, 62}},   // postcss (Not supported by nerdFont)
