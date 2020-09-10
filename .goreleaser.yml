@@ -2,7 +2,7 @@
 # Make sure to check the documentation at http://goreleaser.com
 
 env_files:
-  github_token: '{{ .Env.PWD }}.gh_token'
+  github_token: ~/Projects/Golang_Stuff/logo-ls/.gh_token
 
 project_name: logo-ls
 
