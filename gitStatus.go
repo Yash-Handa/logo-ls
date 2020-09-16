@@ -29,7 +29,7 @@ func getRepoStatus(path string) (git.Status, string, error) {
 
 func getFilesGitStatus(p string) map[string]string {
 	gitRepo, gitRoot, err := getRepoStatus(p)
-	if err != nil {
+	if err != nil || len(gitRepo) == 0 {
 		return nil
 	}
 	pAbs, err := filepath.Abs(p)

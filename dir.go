@@ -58,6 +58,9 @@ func newDir(d *os.File) (*dir, error) {
 	var gitRepoStatus map[string]string // could be nil
 	if flagVector&flag_D > 0 {
 		gitRepoStatus = getFilesGitStatus(d.Name()) // returns map or nil
+		if len(gitRepoStatus) == 0 {
+			gitRepoStatus = nil
+		}
 	}
 
 	if curDir {
