@@ -94,6 +94,13 @@ func (w *CTW) Flush(buf *bytes.Buffer) {
 
 		totW := widthsSum(iw, pad) //total width of the ls block
 		if totW > w.termW {
+			// not even first iteration done print similar to logo-ls -1
+			if len(widths) == 0 {
+				widths = make([][4]int, len(iw))
+				for i := range iw {
+					widths[i] = iw[i]
+				}
+			}
 			break
 		} else if totW >= w.termW/2 { // if total width of the ls block is more than half of terminal
 			// copy iw to widths
