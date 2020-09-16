@@ -48,6 +48,8 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
   - [Red Hat (.rpm package)](#red-hat-rpm-package)
   - [MacOS (Darwin)](#macos-darwin)
   - [Linux](#linux)
+  - [go get](#go-get)
+  - [Build from Source](#build-from-source)
   - [Check the downloaded Resource](#check-the-downloaded-resource) 
 - [Recommended configurations](#recommended-configurations)
 - [Updating](#updating)
@@ -318,9 +320,70 @@ If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/share/man/ma
 $ sudo cp logo-ls.1.gz /usr/share/man/man1/
 ```
 
+### go get
+
+If you have [Golang](https://golang.org/) installed on your system then the `logo-ls` can be downloaded and installed using the the `go` cli tool provided by the language
+
+#### Step 1
+
+The `go` cli installs the binary in the directory specified by `$GOBIN` env variable [default: `~/go/bin/`]. In order to call `logo-ls` from anywhere in user-space, this directory which holds the binary must be present in `$PATH` env variable.
+
+```cmd
+$ echo $PATH
+```
+
+#### Step 2
+
+Now simply install the binary using `go get` in home directory
+
+```cmd
+$ cd ~
+$ go get github.com/Yash-Handa/logo-ls
+```
+
+### Build from Source
+
+It is quite simple to build the command from source. You should have [Golang](https://golang.org/) installed on your system.
+
+#### Step 1
+
+Clone this repository.
+
+```cmd
+$ git clone https://github.com/Yash-Handa/logo-ls.git
+```
+
+#### Step 2
+
+`cd` into the directory `logo-ls`. Then run `go mod tidy` to download the dependencies and after that `go build` to build your system specific binary
+
+```cmd
+$ cd logo-ls
+$ go mod tidy
+$ go build
+```
+
+the `go build` command will produce `logo-ls` executable binary in the current directory.
+
+#### Step 3
+
+Place the `logo-ls` executable in a directory reachable from `$PATH` env variable.
+
+```cmd
+$ sudo cp logo-ls /usr/local/bin
+```
+
+#### Step 4
+
+If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/share/man/man1/`
+
+```cmd
+$ sudo cp logo-ls.1.gz /usr/share/man/man1/
+```
+
 ### Check the downloaded Resource
 
-After downloading the Resource(s) from the [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases) follow the bellow steps to check its authenticity.
+After downloading the Resource(s) from the [Github Release Page](https://github.com/Yash-Handa/logo-ls/releases) follow the below steps to check its authenticity.
 
 #### Step 1
 
