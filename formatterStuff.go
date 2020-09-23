@@ -3,10 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/user"
-	"strconv"
 	"strings"
-	"syscall"
 )
 
 func mainSort(a, b string) bool {
@@ -75,42 +72,6 @@ func lessFuncGenerator(d *dir) {
 // get Owner and Group info
 var grpMap = make(map[string]string)
 var userMap = make(map[string]string)
-
-func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
-	if stat, ok := fi.Sys().(*syscall.Stat_t); ok {
-		if flagVector&(flag_l|flag_o) > 0 {
-			UID := strconv.Itoa(int(stat.Uid))
-			if n, ok := userMap[UID]; ok {
-				o = n
-			} else {
-				u, err := user.LookupId(UID)
-				if err != nil {
-					o = ""
-				} else {
-					o = u.Name
-					userMap[UID] = u.Name
-				}
-			}
-		}
-
-		if flagVector&flag_G == 0 && flagVector&(flag_l|flag_g) > 0 {
-			GID := strconv.Itoa(int(stat.Gid))
-			if n, ok := grpMap[GID]; ok {
-				g = n
-			} else {
-				grp, err := user.LookupGroupId(GID)
-				if err != nil {
-					g = ""
-				} else {
-					g = grp.Name
-					grpMap[GID] = grp.Name
-				}
-			}
-		}
-	}
-
-	return
-}
 
 // get indicator of the file
 func getIndicator(modebit os.FileMode) (i string) {

@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/Yash-Handa/logo-ls/ctw"
@@ -72,9 +71,7 @@ func newDir(d *os.File) (*dir, error) {
 			t.info.owner, t.info.group = getOwnerGroupInfo(ds)
 		}
 		if flagVector&flag_s > 0 {
-			if s, ok := ds.Sys().(*syscall.Stat_t); ok {
-				t.info.blocks = s.Blocks
-			}
+			dirBlocks(t.info, ds)
 		}
 		if flagVector&flag_i == 0 {
 			t.info.icon = iDef["diropen"].getGlyph()
@@ -109,9 +106,7 @@ func newDir(d *os.File) (*dir, error) {
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
 		if flagVector&flag_s > 0 {
-			if s, ok := v.Sys().(*syscall.Stat_t); ok {
-				f.blocks = s.Blocks
-			}
+			dirBlocks(f, v)
 		}
 
 		if flagVector&flag_i == 0 {
@@ -159,9 +154,7 @@ func newDir(d *os.File) (*dir, error) {
 			t.parent.owner, t.parent.group = getOwnerGroupInfo(pds)
 		}
 		if flagVector&flag_s > 0 {
-			if s, ok := pds.Sys().(*syscall.Stat_t); ok {
-				t.parent.blocks = s.Blocks
-			}
+			dirBlocks(t.parent, pds)
 		}
 		if flagVector&flag_i == 0 {
 			t.parent.icon = iDef["diropen"].getGlyph()
@@ -196,9 +189,7 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
 		if flagVector&flag_s > 0 {
-			if s, ok := v.Sys().(*syscall.Stat_t); ok {
-				f.blocks = s.Blocks
-			}
+			dirBlocks(f, v)
 		}
 		if flagVector&flag_i == 0 {
 			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)

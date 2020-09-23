@@ -5,10 +5,12 @@ import (
 	"io"
 	"log"
 	"os"
+	"runtime"
 	"sort"
 	"time"
 
 	"github.com/Yash-Handa/logo-ls/ctw"
+	"github.com/mattn/go-colorable"
 	"github.com/pborman/getopt/v2"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -310,9 +312,14 @@ func main() {
 		}
 	}
 
+	var out io.Writer = os.Stdout
+	if runtime.GOOS == "windows" {
+		out = colorable.NewColorableStdout()
+	}
+
 	// process and display all files
 	if len(args.files) > 0 {
-		io.Copy(os.Stdout, newDir_ArgFiles(args.files).print())
+		io.Copy(out, newDir_ArgFiles(args.files).print())
 		if len(args.dirs) > 0 {
 			fmt.Println()
 		}
@@ -341,7 +348,7 @@ func main() {
 				_ = set_osExitCode(code_Serious)
 			}
 			// print the info of the files of the directory
-			io.Copy(os.Stdout, d.print())
+			io.Copy(out, d.print())
 			if i < len(args.dirs)-1 {
 				fmt.Println()
 			}
