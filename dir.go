@@ -28,6 +28,9 @@ type file struct {
 	gitStatus string
 	icon      string
 	iconColor string
+
+	isGitDir bool
+	currentBranch string
 }
 
 type dir struct {
@@ -129,6 +132,12 @@ func newDir(d *os.File) (*dir, error) {
 			}
 		}
 
+		if v.IsDir() {
+			if isGitRepository(v.Name()){
+				f.currentBranch, err = getCurrentBranch(v.Name())
+			}
+		}
+
 		t.files = append(t.files, f)
 		if v.IsDir() {
 			t.dirs = append(t.dirs, name+"/")
@@ -188,7 +197,7 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 		f.ext = filepath.Ext(name)
 		f.name = name[0 : len(name)-len(f.ext)]
 		f.indicator = getIndicator(v.Mode())
-		f.size = v.Size()
+		f.size = v.Size() 
 		f.modTime = v.ModTime()
 		if long {
 			f.mode = v.Mode().String()
@@ -256,23 +265,23 @@ func (d *dir) print() *bytes.Buffer {
 	buf := bytes.NewBuffer([]byte(""))
 	switch {
 	case flagVector&(flag_l|flag_o|flag_g) > 0:
-		w := ctw.NewLong(9)
+		w := ctw.NewLong(10)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				w.AddRow(getSizeInFormate(v.blocks*512), v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow(getSizeInFormate(v.blocks*512), v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			} else {
-				w.AddRow("", v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow("", v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			}
 			w.IconColor(v.iconColor)
 		}
 		w.Flush(buf)
 	case flagVector&flag_1 > 0:
-		w := ctw.NewLong(4)
+		w := ctw.NewLong(6)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			} else {
-				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			}
 			w.IconColor(v.iconColor)
 		}
@@ -281,9 +290,9 @@ func (d *dir) print() *bytes.Buffer {
 		w := ctw.New(terminalWidth)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
-				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			} else {
-				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
 			}
 			w.IconColor(v.iconColor)
 		}

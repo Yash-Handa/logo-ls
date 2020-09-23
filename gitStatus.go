@@ -7,6 +7,28 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
+func isGitRepository(dir string) bool {
+	_, err := git.PlainOpen(dir)
+
+	return err == nil
+}
+
+// GetCurrentBranch Returns the current Branch
+func getCurrentBranch(path string) (string, error) {
+	op := git.PlainOpenOptions{DetectDotGit: true}
+	r, err := git.PlainOpenWithOptions(path, &op)
+	if err != nil {
+		return "", err
+	}
+
+	headRef, err := r.Head()
+	if err != nil {
+		return "", err
+	}
+
+	return headRef.Name().Short(), nil
+}
+
 func getRepoStatus(path string) (git.Status, string, error) {
 	op := git.PlainOpenOptions{DetectDotGit: true}
 	r, err := git.PlainOpenWithOptions(path, &op)
