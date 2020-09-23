@@ -11,6 +11,7 @@
 ![deb](https://img.shields.io/badge/-Deb%20Package-A81D33?style=flat-square&logo=Debian&link=https://github.com/Yash-Handa/logo-ls/releases/)
 ![rpm](https://img.shields.io/badge/-RPM%20Package-EE0000?style=flat-square&logo=Red-Hat&link=https://github.com/Yash-Handa/logo-ls/releases/)
 ![linux](https://img.shields.io/badge/-Linux%20Binary-FCC624?style=flat-square&logo=Linux&logoColor=000000&link=https://github.com/Yash-Handa/logo-ls/releases/)
+![AUR](https://img.shields.io/aur/version/logo-ls?style=flat-square)
 ![apple](https://img.shields.io/badge/-Darwin%20Binary-999999?style=flat-square&logo=Apple&logoColor=ffffff&link=https://github.com/Yash-Handa/logo-ls/releases/)
 
 modern ls command with beautiful Icons and Git Integrations . Written in Golang
