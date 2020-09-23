@@ -132,9 +132,11 @@ func newDir(d *os.File) (*dir, error) {
 			}
 		}
 
-		if v.IsDir() {
-			if isGitRepository(v.Name()){
-				f.currentBranch, err = getCurrentBranch(v.Name())
+		if flagVector&flag_D > 0 {
+			if v.IsDir() {
+				if isGitRepository(v.Name()){
+					f.currentBranch, err = getCurrentBranch(v.Name())
+				}
 			}
 		}
 
@@ -276,7 +278,7 @@ func (d *dir) print() *bytes.Buffer {
 		}
 		w.Flush(buf)
 	case flagVector&flag_1 > 0:
-		w := ctw.NewLong(6)
+		w := ctw.NewLong(5)
 		for _, v := range d.files {
 			if flagVector&flag_s > 0 {
 				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus, v.currentBranch)
