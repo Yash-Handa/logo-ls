@@ -251,6 +251,16 @@ Download the `.rpm` package from [Github Release Page](https://github.com/Yash-H
 
 Use the `rpm -i path/to/downloaded/resource/` to install the binary and the manpage
 
+### Arch linux
+
+Simply run `yay -S logo-ls`. (Or use the AUR helper of your choice)<br><br>
+Alternatively you can clone the PKGBUILD and build the package manually:
+```bash
+git clone https://aur.archlinux.org/logo-ls.git
+cd logo-ls
+makepkg -si
+```
+
 ### MacOS (Darwin)
 
 To install `logo-ls` on darwin you have to download the binary. Support for Homebrew will come soon
