@@ -1,5 +1,5 @@
 // this file contain dir type definition
-package main
+package dir
 
 import (
 	"bytes"
@@ -13,8 +13,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Yash-Handa/logo-ls/ctw"
+	"github.com/Yash-Handa/logo-ls/assets"
+	"github.com/Yash-Handa/logo-ls/internal/api"
+	"github.com/Yash-Handa/logo-ls/internal/ctw"
+	"github.com/Yash-Handa/logo-ls/internal/sysState"
 )
+
+// create the open dir icon
+var OpenDirIcon = assets.Icon_Def["diropen"].GetColor(1) + assets.Icon_Def["diropen"].GetGlyph() + "\033[38;2;255;255;255m" + " "
 
 type file struct {
 	name, ext, indicator string
@@ -40,9 +46,9 @@ type dir struct {
 
 // define methods on *dir type only not on file type
 
-func newDir(d *os.File) (*dir, error) {
+func New(d *os.File) (*dir, error) {
 	// some flag variable combinations
-	var long, curDir, showHidden bool = flagVector&(flag_l|flag_o|flag_g) > 0, flagVector&(flag_a|flag_d) > 0, flagVector&(flag_a|flag_A) > 0
+	var long, curDir, showHidden bool = api.FlagVector&(api.Flag_l|api.Flag_o|api.Flag_g) > 0, api.FlagVector&(api.Flag_a|api.Flag_d) > 0, api.FlagVector&(api.Flag_a|api.Flag_A) > 0
 
 	t := new(dir)
 
@@ -56,7 +62,7 @@ func newDir(d *os.File) (*dir, error) {
 
 	// getting Git Status of the entire repository
 	var gitRepoStatus map[string]string // could be nil
-	if flagVector&flag_D > 0 {
+	if api.FlagVector&api.Flag_D > 0 {
 		gitRepoStatus = getFilesGitStatus(d.Name()) // returns map or nil
 		if len(gitRepoStatus) == 0 {
 			gitRepoStatus = nil
@@ -71,21 +77,21 @@ func newDir(d *os.File) (*dir, error) {
 			t.info.modeBits = uint32(ds.Mode())
 			t.info.owner, t.info.group = getOwnerGroupInfo(ds)
 		}
-		if flagVector&flag_s > 0 {
+		if api.FlagVector&api.Flag_s > 0 {
 			if s, ok := ds.Sys().(*syscall.Stat_t); ok {
 				t.info.blocks = s.Blocks
 			}
 		}
-		if flagVector&flag_i == 0 {
-			t.info.icon = iDef["diropen"].getGlyph()
-			if flagVector&flag_c == 0 {
-				t.info.iconColor = iDef["diropen"].getColor(1)
+		if api.FlagVector&api.Flag_i == 0 {
+			t.info.icon = assets.Icon_Def["diropen"].GetGlyph()
+			if api.FlagVector&api.Flag_c == 0 {
+				t.info.iconColor = assets.Icon_Def["diropen"].GetColor(1)
 			}
 		}
 	}
 
 	// don't fill files info if the -d flag is passed
-	if flagVector&flag_d > 0 {
+	if api.FlagVector&api.Flag_d > 0 {
 		t.files = append(t.files, t.info)
 		return t, nil
 	}
@@ -108,15 +114,15 @@ func newDir(d *os.File) (*dir, error) {
 			f.modeBits = uint32(v.Mode())
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
-		if flagVector&flag_s > 0 {
+		if api.FlagVector&api.Flag_s > 0 {
 			if s, ok := v.Sys().(*syscall.Stat_t); ok {
 				f.blocks = s.Blocks
 			}
 		}
 
-		if flagVector&flag_i == 0 {
+		if api.FlagVector&api.Flag_i == 0 {
 			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)
-			if flagVector&flag_c != 0 {
+			if api.FlagVector&api.Flag_c != 0 {
 				f.iconColor = ""
 			}
 		}
@@ -136,7 +142,7 @@ func newDir(d *os.File) (*dir, error) {
 	}
 
 	// if -a flag is passed then only eval parent dir and append to files
-	if flagVector&flag_a > 0 {
+	if api.FlagVector&api.Flag_a > 0 {
 		t.files = append(t.files, t.info)
 		p, err := filepath.Abs(d.Name())
 		if err != nil {
@@ -158,15 +164,15 @@ func newDir(d *os.File) (*dir, error) {
 			t.parent.modeBits = uint32(pds.Mode())
 			t.parent.owner, t.parent.group = getOwnerGroupInfo(pds)
 		}
-		if flagVector&flag_s > 0 {
+		if api.FlagVector&api.Flag_s > 0 {
 			if s, ok := pds.Sys().(*syscall.Stat_t); ok {
 				t.parent.blocks = s.Blocks
 			}
 		}
-		if flagVector&flag_i == 0 {
-			t.parent.icon = iDef["diropen"].getGlyph()
-			if flagVector&flag_c == 0 {
-				t.parent.iconColor = iDef["diropen"].getColor(1)
+		if api.FlagVector&api.Flag_i == 0 {
+			t.parent.icon = assets.Icon_Def["diropen"].GetGlyph()
+			if api.FlagVector&api.Flag_c == 0 {
+				t.parent.iconColor = assets.Icon_Def["diropen"].GetColor(1)
 			}
 		}
 		t.files = append(t.files, t.parent)
@@ -177,8 +183,8 @@ func newDir(d *os.File) (*dir, error) {
 	return t, err
 }
 
-func newDir_ArgFiles(files []os.FileInfo) *dir {
-	var long bool = flagVector&(flag_l|flag_o|flag_g) > 0
+func New_ArgFiles(files []os.FileInfo) *dir {
+	var long bool = api.FlagVector&(api.Flag_l|api.Flag_o|api.Flag_g) > 0
 
 	t := new(dir)
 
@@ -195,14 +201,14 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 			f.modeBits = uint32(v.Mode())
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
-		if flagVector&flag_s > 0 {
+		if api.FlagVector&api.Flag_s > 0 {
 			if s, ok := v.Sys().(*syscall.Stat_t); ok {
 				f.blocks = s.Blocks
 			}
 		}
-		if flagVector&flag_i == 0 {
+		if api.FlagVector&api.Flag_i == 0 {
 			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)
-			if flagVector&flag_c != 0 {
+			if api.FlagVector&api.Flag_c != 0 {
 				f.iconColor = ""
 			}
 		}
@@ -211,15 +217,15 @@ func newDir_ArgFiles(files []os.FileInfo) *dir {
 	return t
 }
 
-func newDirs_Recussion(d *os.File) {
-	dd, err := newDir(d)
+func New_Recussion(d *os.File) {
+	dd, err := New(d)
 	d.Close()
 	if err != nil {
 		log.Printf("partial access to %q: %v\n", d.Name(), err)
-		_ = set_osExitCode(code_Minor)
+		sysState.ExitCode(sysState.Code_Minor)
 	}
 	// print the info of the files of the directory
-	io.Copy(os.Stdout, dd.print())
+	io.Copy(os.Stdout, dd.Print())
 	if len(dd.dirs) == 0 {
 		return
 	}
@@ -230,24 +236,24 @@ func newDirs_Recussion(d *os.File) {
 		temp[i] = filepath.Join(d.Name(), v)
 	}
 	for _, v := range temp {
-		fmt.Printf("\n%s:\n", openDir+v)
+		fmt.Printf("\n%s:\n", OpenDirIcon+v)
 		f, err := os.Open(v)
 		if err != nil {
 			log.Printf("cannot access %q: %v\n", v, err)
 			f.Close()
-			_ = set_osExitCode(code_Minor)
+			sysState.ExitCode(sysState.Code_Minor)
 			continue
 		}
-		newDirs_Recussion(f)
+		New_Recussion(f)
 	}
 }
 
-func (d *dir) print() *bytes.Buffer {
+func (d *dir) Print() *bytes.Buffer {
 	// take care of printing, extending symbolic links in long forms
 
 	//sorting
 	lessFuncGenerator(d)
-	if flagVector&flag_U == 0 && flagVector&flag_r > 0 {
+	if api.FlagVector&api.Flag_U == 0 && api.FlagVector&api.Flag_r > 0 {
 		sort.Sort(sort.Reverse(d))
 	} else {
 		sort.Sort(d)
@@ -255,21 +261,21 @@ func (d *dir) print() *bytes.Buffer {
 
 	buf := bytes.NewBuffer([]byte(""))
 	switch {
-	case flagVector&(flag_l|flag_o|flag_g) > 0:
+	case api.FlagVector&(api.Flag_l|api.Flag_o|api.Flag_g) > 0:
 		w := ctw.NewLong(9)
 		for _, v := range d.files {
-			if flagVector&flag_s > 0 {
-				w.AddRow(getSizeInFormate(v.blocks*512), v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+			if api.FlagVector&api.Flag_s > 0 {
+				w.AddRow(getSizeInFormate(v.blocks*512), v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(api.GetTimeFormate()), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			} else {
-				w.AddRow("", v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(timeFormate), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
+				w.AddRow("", v.mode, v.owner, v.group, getSizeInFormate(v.size), v.modTime.Format(api.GetTimeFormate()), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			}
 			w.IconColor(v.iconColor)
 		}
 		w.Flush(buf)
-	case flagVector&flag_1 > 0:
+	case api.FlagVector&api.Flag_1 > 0:
 		w := ctw.NewLong(4)
 		for _, v := range d.files {
-			if flagVector&flag_s > 0 {
+			if api.FlagVector&api.Flag_s > 0 {
 				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			} else {
 				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)
@@ -278,9 +284,9 @@ func (d *dir) print() *bytes.Buffer {
 		}
 		w.Flush(buf)
 	default:
-		w := ctw.New(terminalWidth)
+		w := ctw.New(sysState.GetTerminalWidth())
 		for _, v := range d.files {
-			if flagVector&flag_s > 0 {
+			if api.FlagVector&api.Flag_s > 0 {
 				w.AddRow(getSizeInFormate(v.blocks*512), v.icon, v.name+v.ext+v.indicator, v.gitStatus)
 			} else {
 				w.AddRow("", v.icon, v.name+v.ext+v.indicator, v.gitStatus)

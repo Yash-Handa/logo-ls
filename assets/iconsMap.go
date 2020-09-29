@@ -1,25 +1,26 @@
-package main
+// assets contains all the Icon glyphs info
+package assets
 
 import "fmt"
 
-// iInfo (icon information)
-type iInfo struct {
+// Icon_Info (icon information)
+type Icon_Info struct {
 	i string
 	c [3]uint8 // represents the color in rgb (default 0,0,0 is black)
 }
 
-func (i *iInfo) getGlyph() string {
+func (i *Icon_Info) GetGlyph() string {
 	return i.i
 }
 
-func (i *iInfo) getColor(f uint8) string {
+func (i *Icon_Info) GetColor(f uint8) string {
 	if f == 1 {
 		return fmt.Sprintf("\033[38;2;%03d;%03d;%03dm", i.c[0], i.c[1], i.c[2])
 	}
 	return fmt.Sprintf("\033[38;2;%03d;%03d;%03dm", i.c[0], i.c[1], i.c[2])
 }
 
-var iSet = map[string]*iInfo{
+var Icon_Set = map[string]*Icon_Info{
 	"html":             {"\uf13b", [3]uint8{228, 79, 57}},   // html
 	"markdown":         {"\uf853", [3]uint8{66, 165, 245}},  // markdown
 	"css":              {"\uf81b", [3]uint8{66, 165, 245}},  // css
@@ -332,7 +333,7 @@ var iSet = map[string]*iInfo{
 }
 
 // default icons in case nothing can be found
-var iDef = map[string]*iInfo{
+var Icon_Def = map[string]*Icon_Info{
 	"dir":        {"\uf74a", [3]uint8{224, 177, 77}},
 	"diropen":    {"\ufc6e", [3]uint8{224, 177, 77}},
 	"hiddendir":  {"\uf755", [3]uint8{224, 177, 77}},
