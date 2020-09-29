@@ -167,6 +167,23 @@ func getIcon(name, ext, indicator string) (icon, color string) {
 		i = assets.Icon_Def["dir"]
 	case "*":
 		// send executable related stuff
+		i, ok = assets.Icon_FileName[strings.ToLower(name+ext)]
+		if ok {
+			i.MakeExe()
+			break
+		}
+
+		i, ok = assets.Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
+		if ok {
+			i.MakeExe()
+			break
+		}
+
+		if len(name) == 0 || '.' == name[0] {
+			i = assets.Icon_Def["hiddenfile"]
+			i.MakeExe()
+			break
+		}
 		i = assets.Icon_Def["exe"]
 	default:
 		// send file related stuff
