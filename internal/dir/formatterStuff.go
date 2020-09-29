@@ -115,6 +115,13 @@ func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
 	return
 }
 
+func getFileBlocks(fi os.FileInfo) int64 {
+	if s, ok := fi.Sys().(*syscall.Stat_t); ok {
+		return s.Blocks
+	}
+	return 0
+}
+
 // get indicator of the file
 func getIndicator(modebit os.FileMode) (i string) {
 	switch {

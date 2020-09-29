@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/Yash-Handa/logo-ls/assets"
@@ -78,9 +77,7 @@ func New(d *os.File) (*dir, error) {
 			t.info.owner, t.info.group = getOwnerGroupInfo(ds)
 		}
 		if api.FlagVector&api.Flag_s > 0 {
-			if s, ok := ds.Sys().(*syscall.Stat_t); ok {
-				t.info.blocks = s.Blocks
-			}
+			t.info.blocks = getFileBlocks(ds)
 		}
 		if api.FlagVector&api.Flag_i == 0 {
 			t.info.icon = assets.Icon_Def["diropen"].GetGlyph()
@@ -115,9 +112,7 @@ func New(d *os.File) (*dir, error) {
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
 		if api.FlagVector&api.Flag_s > 0 {
-			if s, ok := v.Sys().(*syscall.Stat_t); ok {
-				f.blocks = s.Blocks
-			}
+			f.blocks = getFileBlocks(v)
 		}
 
 		if api.FlagVector&api.Flag_i == 0 {
@@ -165,9 +160,7 @@ func New(d *os.File) (*dir, error) {
 			t.parent.owner, t.parent.group = getOwnerGroupInfo(pds)
 		}
 		if api.FlagVector&api.Flag_s > 0 {
-			if s, ok := pds.Sys().(*syscall.Stat_t); ok {
-				t.parent.blocks = s.Blocks
-			}
+			t.parent.blocks = getFileBlocks(pds)
 		}
 		if api.FlagVector&api.Flag_i == 0 {
 			t.parent.icon = assets.Icon_Def["diropen"].GetGlyph()
@@ -202,9 +195,7 @@ func New_ArgFiles(files []os.FileInfo) *dir {
 			f.owner, f.group = getOwnerGroupInfo(v)
 		}
 		if api.FlagVector&api.Flag_s > 0 {
-			if s, ok := v.Sys().(*syscall.Stat_t); ok {
-				f.blocks = s.Blocks
-			}
+			f.blocks = getFileBlocks(v)
 		}
 		if api.FlagVector&api.Flag_i == 0 {
 			f.icon, f.iconColor = getIcon(f.name, f.ext, f.indicator)
