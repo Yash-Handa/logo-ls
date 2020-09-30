@@ -64,10 +64,10 @@ func (l *LongCTW) Flush(buf *bytes.Buffer) {
 			}
 
 			if j == l.cols-2 {
-				fmt.Fprintf(buf, "%s%*s%s", l.ic[i], l.c[j], c, white)
+				fmt.Fprintf(buf, "%s%*s%s", l.ic[i], l.c[j], c, noColor)
 			} else if j >= l.cols-1 && (1<<l.cols)&skipCol == 0 {
 				color := getGitColor(r[l.cols])
-				fmt.Fprintf(buf, "%s%-*s%s", color, l.c[j], c, white)
+				fmt.Fprintf(buf, "%s%-*s%s", color, l.c[j], c, noColor)
 			} else {
 				fmt.Fprintf(buf, "%-*s", l.c[j], c)
 			}
