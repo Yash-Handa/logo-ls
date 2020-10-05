@@ -7,7 +7,8 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/Yash-Handa/logo-ls?style=flat-square)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Yash-Handa/logo-ls?sort=semver&style=flat-square)
 ![PRs](https://img.shields.io/badge/PRs-welcome-56cc14?style=flat-square)
-[![HitCount](http://hits.dwyl.com/{Yash-Handa}/{logo-ls}.svg)](http://hits.dwyl.com/{Yash-Handa}/{logo-ls})
+[![HitCount](http://hits.dwyl.com/Yash-Handa/logo-ls.svg)](http://hits.dwyl.com/Yash-Handa/logo-ls)
+![AUR](https://img.shields.io/aur/version/logo-ls?style=flat-square&logo=Arch-Linux&labelColor=abcdef&label=AUR)
 ![deb](https://img.shields.io/badge/-Deb%20Package-A81D33?style=flat-square&logo=Debian&link=https://github.com/Yash-Handa/logo-ls/releases/)
 ![rpm](https://img.shields.io/badge/-RPM%20Package-EE0000?style=flat-square&logo=Red-Hat&link=https://github.com/Yash-Handa/logo-ls/releases/)
 ![linux](https://img.shields.io/badge/-Linux%20Binary-FCC624?style=flat-square&logo=Linux&logoColor=000000&link=https://github.com/Yash-Handa/logo-ls/releases/)
@@ -45,6 +46,7 @@ Command and Arguments supported are listed in [HELP.md](/HELP.md)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
   - [Debian (.deb package)](#debian-deb-package)
+  - [Arch Linux (AUR)](#arch-linux)
   - [Red Hat (.rpm package)](#red-hat-rpm-package)
   - [MacOS (Darwin)](#macos-darwin)
   - [Linux](#linux)
@@ -249,6 +251,16 @@ Download the `.rpm` package from [Github Release Page](https://github.com/Yash-H
 #### Step 2
 
 Use the `rpm -i path/to/downloaded/resource/` to install the binary and the manpage
+
+### Arch linux
+
+Simply run `yay -S logo-ls`. (Or use the AUR helper of your choice)<br><br>
+Alternatively you can clone the PKGBUILD and build the package manually:
+```bash
+git clone https://aur.archlinux.org/logo-ls.git
+cd logo-ls
+makepkg -si
+```
 
 ### MacOS (Darwin)
 

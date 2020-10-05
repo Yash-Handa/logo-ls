@@ -2,13 +2,15 @@
 
 // +build !windows
 
-package main
+package dir
 
 import (
 	"os"
 	"os/user"
 	"strconv"
 	"syscall"
+
+	"github.com/Yash-Handa/logo-ls/internal/api"
 )
 
 func dirBlocks(info *file, fi os.FileInfo) {
@@ -19,7 +21,7 @@ func dirBlocks(info *file, fi os.FileInfo) {
 
 func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
 	if stat, ok := fi.Sys().(*syscall.Stat_t); ok {
-		if flagVector&(flag_l|flag_o) > 0 {
+		if api.FlagVector&(api.Flag_l|api.Flag_o) > 0 {
 			UID := strconv.Itoa(int(stat.Uid))
 			if n, ok := userMap[UID]; ok {
 				o = n
@@ -34,7 +36,7 @@ func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
 			}
 		}
 
-		if flagVector&flag_G == 0 && flagVector&(flag_l|flag_g) > 0 {
+		if api.FlagVector&api.Flag_G == 0 && api.FlagVector&(api.Flag_l|api.Flag_g) > 0 {
 			GID := strconv.Itoa(int(stat.Gid))
 			if n, ok := grpMap[GID]; ok {
 				g = n
@@ -51,4 +53,11 @@ func getOwnerGroupInfo(fi os.FileInfo) (o string, g string) {
 	}
 
 	return
+}
+
+func getFileBlocks(fi os.FileInfo) int64 {
+	if s, ok := fi.Sys().(*syscall.Stat_t); ok {
+		return s.Blocks
+	}
+	return 0
 }

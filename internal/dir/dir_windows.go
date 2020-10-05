@@ -2,7 +2,7 @@
 
 // +build windows
 
-package main
+package dir
 
 import (
 	"os"

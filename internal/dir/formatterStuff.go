@@ -1,9 +1,12 @@
-package main
+package dir
 
 import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Yash-Handa/logo-ls/assets"
+	"github.com/Yash-Handa/logo-ls/internal/api"
 )
 
 func mainSort(a, b string) bool {
@@ -23,12 +26,12 @@ func mainSort(a, b string) bool {
 // Custom less functions
 func lessFuncGenerator(d *dir) {
 	switch {
-	case (flagVector & flag_alpha) > 0:
+	case (api.FlagVector & api.Flag_alpha) > 0:
 		// sort by alphabetical order of name.ext
 		d.less = func(i, j int) bool {
 			return mainSort(d.files[i].name+d.files[i].ext, d.files[j].name+d.files[j].ext)
 		}
-	case (flagVector & flag_S) > 0:
+	case (api.FlagVector & api.Flag_S) > 0:
 		// sort by file size, largest first
 		d.less = func(i, j int) bool {
 			if d.files[i].size > d.files[j].size {
@@ -39,13 +42,13 @@ func lessFuncGenerator(d *dir) {
 				return false
 			}
 		}
-	case (flagVector & flag_t) > 0:
+	case (api.FlagVector & api.Flag_t) > 0:
 		// sort by modification time, newest first
 		// not sorting by alphabetical order because equality is quite rare
 		d.less = func(i, j int) bool {
 			return d.files[i].modTime.After(d.files[j].modTime)
 		}
-	case (flagVector & flag_X) > 0:
+	case (api.FlagVector & api.Flag_X) > 0:
 		// sort alphabetically by entry extension
 		d.less = func(i, j int) bool {
 			if mainSort(d.files[i].ext, d.files[j].ext) {
@@ -56,7 +59,7 @@ func lessFuncGenerator(d *dir) {
 				return false
 			}
 		}
-	case (flagVector & flag_v) > 0:
+	case (api.FlagVector & api.Flag_v) > 0:
 		// natural sort of (version) numbers within text
 		d.less = func(i, j int) bool {
 			return d.files[i].name+d.files[i].ext < d.files[j].name+d.files[j].ext
@@ -91,7 +94,7 @@ func getIndicator(modebit os.FileMode) (i string) {
 }
 
 func getSizeInFormate(b int64) string {
-	if flagVector&flag_h == 0 {
+	if api.FlagVector&api.Flag_h == 0 {
 		return fmt.Sprintf("%d", b)
 	}
 
@@ -109,40 +112,57 @@ func getSizeInFormate(b int64) string {
 }
 
 func getIcon(name, ext, indicator string) (icon, color string) {
-	var i *iInfo
+	var i *assets.Icon_Info
 	var ok bool
 	switch indicator {
 	case "/":
 		// send dir related stuff
-		i, ok = Icon_Dir[strings.ToLower(name+ext)]
+		i, ok = assets.Icon_Dir[strings.ToLower(name+ext)]
 		if ok {
 			break
 		}
 		if len(name) == 0 || '.' == name[0] {
-			i = iDef["hiddendir"]
+			i = assets.Icon_Def["hiddendir"]
 			break
 		}
-		i = iDef["dir"]
+		i = assets.Icon_Def["dir"]
 	case "*":
 		// send executable related stuff
-		i = iDef["exe"]
+		i, ok = assets.Icon_FileName[strings.ToLower(name+ext)]
+		if ok {
+			i.MakeExe()
+			break
+		}
+
+		i, ok = assets.Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
+		if ok {
+			i.MakeExe()
+			break
+		}
+
+		if len(name) == 0 || '.' == name[0] {
+			i = assets.Icon_Def["hiddenfile"]
+			i.MakeExe()
+			break
+		}
+		i = assets.Icon_Def["exe"]
 	default:
 		// send file related stuff
-		i, ok = Icon_FileName[strings.ToLower(name+ext)]
+		i, ok = assets.Icon_FileName[strings.ToLower(name+ext)]
 		if ok {
 			break
 		}
 
-		i, ok = Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
+		i, ok = assets.Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
 		if ok {
 			break
 		}
 
 		if len(name) == 0 || '.' == name[0] {
-			i = iDef["hiddenfile"]
+			i = assets.Icon_Def["hiddenfile"]
 			break
 		}
-		i = iDef["file"]
+		i = assets.Icon_Def["file"]
 	}
-	return i.getGlyph(), i.getColor(1)
+	return i.GetGlyph(), i.GetColor(1)
 }
