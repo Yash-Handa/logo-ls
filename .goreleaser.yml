@@ -17,7 +17,7 @@ builds:
     # supported OS
     goos:
       - linux
-      # - windows
+      - windows
       - darwin
     # supported ARCH
     goarch:

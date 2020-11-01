@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"runtime"
 	"sort"
 
 	"github.com/Yash-Handa/logo-ls/assets"
@@ -12,6 +13,7 @@ import (
 	"github.com/Yash-Handa/logo-ls/internal/ctw"
 	"github.com/Yash-Handa/logo-ls/internal/dir"
 	"github.com/Yash-Handa/logo-ls/internal/sysState"
+	"github.com/mattn/go-colorable"
 )
 
 func main() {
@@ -65,9 +67,14 @@ func main() {
 		}
 	}
 
+	var out io.Writer = os.Stdout
+	if runtime.GOOS == "windows" {
+		out = colorable.NewColorableStdout()
+	}
+
 	// process and display all files
 	if len(args.files) > 0 {
-		io.Copy(os.Stdout, dir.New_ArgFiles(args.files).Print())
+		io.Copy(out, dir.New_ArgFiles(args.files).Print())
 		if len(args.dirs) > 0 {
 			fmt.Println()
 		}
@@ -96,7 +103,7 @@ func main() {
 				sysState.ExitCode(sysState.Code_Serious)
 			}
 			// print the info of the files of the directory
-			io.Copy(os.Stdout, d.Print())
+			io.Copy(out, d.Print())
 			if i < len(args.dirs)-1 {
 				fmt.Println()
 			}
