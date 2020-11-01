@@ -114,9 +114,9 @@ func getSizeInFormate(b int64) string {
 func getIcon(name, ext, indicator string) (icon, color string) {
 	var i *assets.Icon_Info
 	var ok bool
+
 	switch indicator {
 	case "/":
-		// send dir related stuff
 		i, ok = assets.Icon_Dir[strings.ToLower(name+ext)]
 		if ok {
 			break
@@ -126,31 +126,24 @@ func getIcon(name, ext, indicator string) (icon, color string) {
 			break
 		}
 		i = assets.Icon_Def["dir"]
-	case "*":
-		// send executable related stuff
-		i, ok = assets.Icon_FileName[strings.ToLower(name+ext)]
-		if ok {
-			i.MakeExe()
-			break
-		}
-
-		i, ok = assets.Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
-		if ok {
-			i.MakeExe()
-			break
-		}
-
-		if len(name) == 0 || '.' == name[0] {
-			i = assets.Icon_Def["hiddenfile"]
-			i.MakeExe()
-			break
-		}
-		i = assets.Icon_Def["exe"]
 	default:
-		// send file related stuff
 		i, ok = assets.Icon_FileName[strings.ToLower(name+ext)]
 		if ok {
 			break
+		}
+
+		// a special admiration for goLang
+		if ext == ".go" && strings.HasSuffix(name, "_test") {
+			i = assets.Icon_Set["go-test"]
+			break
+		}
+
+		t := strings.Split(name, ".")
+		if len(t) > 1 && t[0] != "" {
+			i, ok = assets.Icon_SubExt[strings.ToLower(t[len(t)-1]+ext)]
+			if ok {
+				break
+			}
 		}
 
 		i, ok = assets.Icon_Ext[strings.ToLower(strings.TrimPrefix(ext, "."))]
@@ -164,5 +157,14 @@ func getIcon(name, ext, indicator string) (icon, color string) {
 		}
 		i = assets.Icon_Def["file"]
 	}
+
+	// change icon color if the file is executable
+	if indicator == "*" {
+		if i.GetGlyph() == "\uf723" {
+			i = assets.Icon_Def["exe"]
+		}
+		i.MakeExe()
+	}
+
 	return i.GetGlyph(), i.GetColor(1)
 }

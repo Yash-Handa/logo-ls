@@ -7,7 +7,6 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/Yash-Handa/logo-ls?style=flat-square)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Yash-Handa/logo-ls?sort=semver&style=flat-square)
 ![PRs](https://img.shields.io/badge/PRs-welcome-56cc14?style=flat-square)
-[![HitCount](http://hits.dwyl.com/Yash-Handa/logo-ls.svg)](http://hits.dwyl.com/Yash-Handa/logo-ls)
 ![AUR](https://img.shields.io/aur/version/logo-ls?style=flat-square&logo=Arch-Linux&labelColor=abcdef&label=AUR)
 ![deb](https://img.shields.io/badge/-Deb%20Package-A81D33?style=flat-square&logo=Debian&link=https://github.com/Yash-Handa/logo-ls/releases/)
 ![rpm](https://img.shields.io/badge/-RPM%20Package-EE0000?style=flat-square&logo=Red-Hat&link=https://github.com/Yash-Handa/logo-ls/releases/)

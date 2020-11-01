@@ -31,6 +31,7 @@ var Icon_Set = map[string]*Icon_Info{
 	"html":             {i: "\uf13b", c: [3]uint8{228, 79, 57}},   // html
 	"markdown":         {i: "\uf853", c: [3]uint8{66, 165, 245}},  // markdown
 	"css":              {i: "\uf81b", c: [3]uint8{66, 165, 245}},  // css
+	"css-map":          {i: "\ue749", c: [3]uint8{66, 165, 245}},  // css-map
 	"sass":             {i: "\ue603", c: [3]uint8{237, 80, 122}},  // sass
 	"less":             {i: "\ue60b", c: [3]uint8{2, 119, 189}},   // less
 	"json":             {i: "\ue60b", c: [3]uint8{251, 193, 60}},  // json
@@ -38,10 +39,15 @@ var Icon_Set = map[string]*Icon_Info{
 	"xml":              {i: "\uf72d", c: [3]uint8{64, 153, 69}},   // xml
 	"image":            {i: "\uf71e", c: [3]uint8{48, 166, 154}},  // image
 	"javascript":       {i: "\ue74e", c: [3]uint8{255, 202, 61}},  // javascript
+	"javascript-map":   {i: "\ue781", c: [3]uint8{255, 202, 61}},  // javascript-map
+	"test-jsx":         {i: "\uf595", c: [3]uint8{35, 188, 212}},  // test-jsx
+	"test-js":          {i: "\uf595", c: [3]uint8{255, 202, 61}},  // test-js
 	"react":            {i: "\ue7ba", c: [3]uint8{35, 188, 212}},  // react
 	"react_ts":         {i: "\ue7ba", c: [3]uint8{36, 142, 211}},  // react_ts
 	"settings":         {i: "\uf013", c: [3]uint8{66, 165, 245}},  // settings
 	"typescript":       {i: "\ue628", c: [3]uint8{3, 136, 209}},   // typescript
+	"typescript-def":   {i: "\ufbe4", c: [3]uint8{3, 136, 209}},   // typescript-def
+	"test-ts":          {i: "\uf595", c: [3]uint8{3, 136, 209}},   // test-ts
 	"pdf":              {i: "\uf724", c: [3]uint8{244, 68, 62}},   // pdf
 	"table":            {i: "\uf71a", c: [3]uint8{139, 195, 74}},  // table
 	"visualstudio":     {i: "\ue70c", c: [3]uint8{173, 99, 188}},  // visualstudio
@@ -57,6 +63,7 @@ var Icon_Set = map[string]*Icon_Info{
 	"cpp":              {i: "\ufb71", c: [3]uint8{2, 119, 189}},   // cpp
 	"go":               {i: "\ufcd1", c: [3]uint8{32, 173, 194}},  // go
 	"go-mod":           {i: "\ufcd1", c: [3]uint8{237, 80, 122}},  // go-mod
+	"go-test":          {i: "\ufcd1", c: [3]uint8{255, 213, 79}},  // go-test
 	"python":           {i: "\uf81f", c: [3]uint8{52, 102, 143}},  // python
 	"python-misc":      {i: "\uf820", c: [3]uint8{130, 61, 28}},   // python-misc
 	"url":              {i: "\uf836", c: [3]uint8{66, 165, 245}},  // url
@@ -185,6 +192,8 @@ var Icon_Set = map[string]*Icon_Info{
 	"centOS":           {i: "\uf304", c: [3]uint8{157, 83, 135}},  // centOS
 	"alpine":           {i: "\uf300", c: [3]uint8{14, 87, 123}},   // alpine
 	"mint":             {i: "\uf30f", c: [3]uint8{125, 190, 58}},  // mint
+	"routing":          {i: "\ufb40", c: [3]uint8{67, 160, 71}},   // routing
+	"laravel":          {i: "\ue73f", c: [3]uint8{248, 80, 81}},   // laravel
 	"pug":              {i: "\ue60e", c: [3]uint8{239, 204, 163}}, // pug (Not supported by nerdFont)
 	"blink":            {i: "\uf72a", c: [3]uint8{249, 169, 60}},  // blink (The Foundry Nuke) (Not supported by nerdFont)
 	"postcss":          {i: "\uf81b", c: [3]uint8{244, 68, 62}},   // postcss (Not supported by nerdFont)
