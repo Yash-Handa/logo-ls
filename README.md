@@ -291,10 +291,10 @@ $ sudo cp logo-ls /usr/local/bin
 
 #### Step 4
 
-If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/share/man/man1/`
+If you want the man page of `logo-ls` place `logo-ls.1.gz` in `/usr/local/share/man/man1/`
 
 ```cmd
-$ sudo cp logo-ls.1.gz /usr/share/man/man1/
+$ sudo cp logo-ls.1.gz /usr/local/share/man/man1/
 ```
 
 ### Linux
