@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/Yash-Handa/logo-ls/internal/sysState"
@@ -220,6 +221,10 @@ func Bootstrap() {
 		// screen width for custom tw
 		w, _, e := terminal.GetSize(int(os.Stdout.Fd()))
 		if e == nil {
+			if w == 0 {
+				// for systems that don’t support ‘TIOCGWINSZ’.
+				w, _ = strconv.Atoi(os.Getenv("COLUMNS"))
+			}
 			sysState.TerminalWidth(w)
 		}
 	}
