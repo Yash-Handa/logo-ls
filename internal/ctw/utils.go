@@ -4,7 +4,6 @@ import "strings"
 
 var (
 	noColor    string = "\033[0m"
-	white      string = "\033[38;2;255;255;255m" // not used anymore
 	green      string = "\033[38;2;055;183;021m"
 	brown      string = "\033[38;2;192;154;107m"
 	brailEmpty string = "\u2800"
@@ -12,7 +11,7 @@ var (
 
 func DisplayColor(b bool) {
 	if b == false {
-		white = ""
+		noColor = ""
 		green = ""
 		brown = ""
 	}
