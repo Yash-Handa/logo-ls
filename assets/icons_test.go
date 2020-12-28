@@ -34,7 +34,7 @@ func TestFileIcons(t *testing.T) {
 			i := assets.Icon_Set[v]
 			fmt.Fprintln(os.Stderr)
 			buf := bytes.NewBuffer([]byte(""))
-			log.Println("Printing files of type", i.GetColor(1)+v+"\033[38;2;255;255;255m")
+			log.Println("Printing files of type", i.GetColor(1)+v+"\033[0m")
 			w := ctw.New(terminalWidth)
 			for f, d := range assets.Icon_FileName {
 				if d == i {
@@ -46,7 +46,7 @@ func TestFileIcons(t *testing.T) {
 			io.Copy(os.Stderr, buf)
 
 			buf = bytes.NewBuffer([]byte(""))
-			log.Println("Printing extentions of type", i.GetColor(1)+v+"\033[38;2;255;255;255m")
+			log.Println("Printing extentions of type", i.GetColor(1)+v+"\033[0m")
 			w = ctw.New(terminalWidth)
 			for e, d := range assets.Icon_Ext {
 				if d == i {

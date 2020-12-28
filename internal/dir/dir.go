@@ -19,7 +19,7 @@ import (
 )
 
 // create the open dir icon
-var OpenDirIcon = assets.Icon_Def["diropen"].GetColor(1) + assets.Icon_Def["diropen"].GetGlyph() + "\033[38;2;255;255;255m" + " "
+var OpenDirIcon = assets.Icon_Def["diropen"].GetColor(1) + assets.Icon_Def["diropen"].GetGlyph() + "\033[0m" + " "
 
 type file struct {
 	name, ext, indicator string
