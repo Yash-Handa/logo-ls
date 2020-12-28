@@ -24,3 +24,6 @@ dist
 # env stuff
 *.env
 .gh_token
+
+# test related data
+testdata/dirEnv*
