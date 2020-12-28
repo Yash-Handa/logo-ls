@@ -223,6 +223,7 @@ func New_Recussion(d *os.File) {
 	// at this point dd.print has sorted the children files
 	// but not using it instead printing children in directory order
 	temp := make([]string, len(dd.dirs))
+	sort.Strings(dd.dirs)
 	for i, v := range dd.dirs {
 		temp[i] = filepath.Join(d.Name(), v)
 	}
