@@ -174,11 +174,11 @@ func (w *CTW) printCell(buf *bytes.Buffer, i int, cs [4]int) {
 		fmt.Fprintf(buf, "%-*s%s", cs[0]-1, w.d[i][0], brailEmpty)
 	}
 	if w.showIcon {
-		fmt.Fprintf(buf, "%s%1s%s%s", w.ic[i], w.d[i][1], white, brailEmpty)
+		fmt.Fprintf(buf, "%s%1s%s%s", w.ic[i], w.d[i][1], noColor, brailEmpty)
 	}
-	fmt.Fprintf(buf, "%s%-*s%s", getGitColor(w.d[i][3]), cs[2], w.d[i][2], white)
+	fmt.Fprintf(buf, "%s%-*s%s", getGitColor(w.d[i][3]), cs[2], w.d[i][2], noColor)
 
 	if cs[3] > 0 {
-		fmt.Fprintf(buf, "%s%s%1s%s", brailEmpty, getGitColor(w.d[i][3]), w.d[i][3], white)
+		fmt.Fprintf(buf, "%s%s%1s%s", brailEmpty, getGitColor(w.d[i][3]), w.d[i][3], noColor)
 	}
 }

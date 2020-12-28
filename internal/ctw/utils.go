@@ -3,7 +3,7 @@ package ctw
 import "strings"
 
 var (
-	white      string = "\033[38;2;255;255;255m"
+	noColor    string = "\033[0m"
 	green      string = "\033[38;2;055;183;021m"
 	brown      string = "\033[38;2;192;154;107m"
 	brailEmpty string = "\u2800"
@@ -11,7 +11,7 @@ var (
 
 func DisplayColor(b bool) {
 	if b == false {
-		white = ""
+		noColor = ""
 		green = ""
 		brown = ""
 	}
@@ -26,7 +26,7 @@ func DisplayBrailEmpty(b bool) {
 func getGitColor(gitStatus string) string {
 	switch strings.Trim(gitStatus, " ") {
 	case "":
-		return white
+		return noColor
 	case "U":
 		return green
 	default:
