@@ -88,6 +88,9 @@ func main() {
 				fmt.Println()
 			}
 			fmt.Printf("%s:\n", dir.OpenDirIcon+v.Name())
+			if api.FlagVector&api.Flag_D > 0 {
+				dir.GitRepoCompute()
+			}
 			dir.New_Recussion(v)
 		}
 	} else {
@@ -95,6 +98,9 @@ func main() {
 		for i, v := range args.dirs {
 			if pName {
 				fmt.Printf("%s:\n", dir.OpenDirIcon+v.Name())
+			}
+			if api.FlagVector&api.Flag_D > 0 {
+				dir.GitRepoCompute()
 			}
 			d, err := dir.New(v)
 			v.Close()
