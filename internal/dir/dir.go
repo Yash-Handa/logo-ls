@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/Yash-Handa/logo-ls/internal/api"
 	"github.com/Yash-Handa/logo-ls/internal/ctw"
 	"github.com/Yash-Handa/logo-ls/internal/sysState"
+	"github.com/mattn/go-colorable"
 )
 
 // create the open dir icon
@@ -216,7 +218,11 @@ func New_Recussion(d *os.File) {
 		sysState.ExitCode(sysState.Code_Minor)
 	}
 	// print the info of the files of the directory
-	io.Copy(os.Stdout, dd.Print())
+	var out io.Writer = os.Stdout
+	if runtime.GOOS == "windows" {
+		out = colorable.NewColorableStdout()
+	}
+	io.Copy(out, dd.Print())
 	if len(dd.dirs) == 0 {
 		return
 	}
