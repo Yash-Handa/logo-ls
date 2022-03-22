@@ -60,7 +60,7 @@ func (l *LongCTW) Flush(buf *bytes.Buffer) {
 				continue
 			}
 			if f == false {
-				fmt.Fprintf(buf, "%s", brailEmpty)
+				fmt.Fprintf(buf, "%s", empty)
 			}
 
 			if j == l.cols-2 {

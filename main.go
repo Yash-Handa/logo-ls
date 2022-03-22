@@ -27,7 +27,6 @@ func main() {
 	}
 	if api.FlagVector&api.Flag_i > 0 {
 		dir.OpenDirIcon = ""
-		ctw.DisplayBrailEmpty(false)
 	}
 
 	// extract files/dir from arguments
