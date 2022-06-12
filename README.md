@@ -106,7 +106,7 @@ Almost all flags are same as that of the classic ls command and behave similarly
 
 <div>
   <span align="center">
-  <img alt="logo-ls -A" title="logo-ls -A" src="/.github/images/ls-A.png">
+  <img alt="logo-ls -A" title="logo-ls -A" src="/.github/images/ls-A-upper.png">
     </span>
 </div><br>
 
