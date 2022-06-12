@@ -3,6 +3,7 @@ package dir
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/Yash-Handa/logo-ls/assets"
@@ -77,20 +78,40 @@ var grpMap = make(map[string]string)
 var userMap = make(map[string]string)
 
 // get indicator of the file
-func getIndicator(modebit os.FileMode) (i string) {
+func getIndicator(name string, isLongMode bool) (i string) {
+	stats, err := os.Lstat(name)
+
+	if err != nil {
+		return ""
+	}
+
+	modebit := stats.Mode()
+
 	switch {
 	case modebit&os.ModeDir > 0:
 		i = "/"
 	case modebit&os.ModeNamedPipe > 0:
 		i = "|"
 	case modebit&os.ModeSymlink > 0:
-		i = "@"
+		i = getSymlinkIndicator(name, isLongMode)
 	case modebit&os.ModeSocket > 0:
 		i = "="
 	case modebit&1000000 > 0:
 		i = "*"
 	}
 	return i
+}
+
+func getSymlinkIndicator(name string, isLongMode bool) string {
+	if !isLongMode {
+		return "@"
+	}
+
+	if s, err := filepath.EvalSymlinks(name); err == nil {
+		return " -> " + s
+	}
+
+	return ""
 }
 
 func getSizeInFormate(b int64) string {

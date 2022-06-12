@@ -23,6 +23,11 @@ import (
 // create the open dir icon
 var OpenDirIcon = assets.Icon_Def["diropen"].GetColor(1) + assets.Icon_Def["diropen"].GetGlyph() + "\033[0m" + " "
 
+type FileInfo struct {
+	os.FileInfo
+	AbsPath string
+}
+
 type file struct {
 	name, ext, indicator string
 	modTime              time.Time
@@ -105,7 +110,7 @@ func New(d *os.File) (*dir, error) {
 		f := new(file)
 		f.ext = filepath.Ext(name)
 		f.name = name[0 : len(name)-len(f.ext)]
-		f.indicator = getIndicator(v.Mode())
+		f.indicator = getIndicator(filepath.Join(d.Name(), name), long)
 		f.size = v.Size()
 		f.modTime = v.ModTime()
 		if long {
@@ -178,7 +183,7 @@ func New(d *os.File) (*dir, error) {
 	return t, err
 }
 
-func New_ArgFiles(files []os.FileInfo) *dir {
+func New_ArgFiles(files []FileInfo) *dir {
 	var long bool = api.FlagVector&(api.Flag_l|api.Flag_o|api.Flag_g) > 0
 
 	t := new(dir)
@@ -188,7 +193,7 @@ func New_ArgFiles(files []os.FileInfo) *dir {
 		f := new(file)
 		f.ext = filepath.Ext(name)
 		f.name = name[0 : len(name)-len(f.ext)]
-		f.indicator = getIndicator(v.Mode())
+		f.indicator = getIndicator(v.AbsPath, long)
 		f.size = v.Size()
 		f.modTime = v.ModTime()
 		if long {
