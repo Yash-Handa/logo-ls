@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sort"
 
@@ -40,13 +41,14 @@ func main() {
 	sort.Strings(dirs)
 
 	args := struct {
-		files []os.FileInfo
+		files []dir.FileInfo
 		dirs  []*os.File
 	}{}
 
 	// segregate args in files and dirs, and print error for those which cannot be opened
 	for _, v := range dirs {
-		d, err := os.Open(v)
+		abs, _ := filepath.Abs(v)
+		d, err := os.Open(abs)
 		if err != nil {
 			log.Printf("cannot access %q: %v\n", v, err)
 			d.Close()
@@ -63,7 +65,10 @@ func main() {
 		if ds.IsDir() {
 			args.dirs = append(args.dirs, d)
 		} else {
-			args.files = append(args.files, ds)
+			args.files = append(args.files, dir.FileInfo{
+				FileInfo: ds,
+				AbsPath:  d.Name(),
+			})
 		}
 	}
 

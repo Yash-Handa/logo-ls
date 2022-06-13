@@ -81,11 +81,11 @@ func TestE2E(t *testing.T) {
 	}{
 		{args: []string{"-1"}, testFile: "logo-ls.snap", td: "Testing normal execution"},
 		{args: []string{"-1a"}, testFile: "logo-ls-a.snap", td: "Testing -a (all) execution"},
-		{args: []string{"-1A"}, testFile: "logo-ls-A.snap", td: "Testing -A (almost all) execution"},
+		{args: []string{"-1A"}, testFile: "logo-ls-A-upper.snap", td: "Testing -A (almost all) execution"},
 		{args: []string{"-1i"}, testFile: "logo-ls-i.snap", td: "Testing -i (no icon) execution"},
 		{args: []string{"-1r"}, testFile: "logo-ls-r.snap", td: "Testing -r (reverse) execution"},
 		{args: []string{"-1sh"}, testFile: "logo-ls-sh.snap", td: "Testing -sh (human readable size) execution"},
-		{args: []string{"-1R"}, testFile: "logo-ls-R.snap", td: "Testing -R (recursive) execution"},
+		{args: []string{"-1R"}, testFile: "logo-ls-R-upper.snap", td: "Testing -R (recursive) execution"},
 		{args: []string{"-1Ra"}, testFile: "logo-ls-Ra.snap", td: "Testing -Ra (recursive, all) execution"},
 		{args: []string{"-1shRa"}, testFile: "logo-ls-shRa.snap", td: "Testing -shRa execution"},
 		{args: []string{"-V"}, testFile: "logo-ls-V.snap", td: "Testing -V option prints version"},
