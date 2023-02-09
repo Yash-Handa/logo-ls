@@ -7,68 +7,123 @@ import (
 
 	"github.com/Yash-Handa/logo-ls/assets"
 	"github.com/Yash-Handa/logo-ls/internal/api"
+	"golang.org/x/exp/constraints"
 )
 
-func mainSort(a, b string) bool {
-	switch a {
-	case ".", "..":
-	default:
-		a = strings.TrimPrefix(a, ".")
+func threeWayCompare[K constraints.Ordered](i,j K) int {
+	if i < j {
+		return -1
 	}
-	switch b {
-	case ".", "..":
-	default:
-		b = strings.TrimPrefix(b, ".")
+	if j < i {
+		return 1
 	}
-	return strings.ToLower(a) < strings.ToLower(b)
+	return 0
 }
+
+func cleanupName(name string) string {
+	switch name {
+	case ".", "..":
+	default:
+		name = strings.TrimPrefix(name, ".")
+	}
+
+	return strings.ToLower(name)
+}
+
+func indexCmp(d *dir, i, j int) int {
+	return threeWayCompare(i, j)
+}
+
+func nameCmp(d *dir, i, j int) int {
+	return strings.Compare(cleanupName(d.files[i].name + d.files[i].ext), cleanupName(d.files[j].name + d.files[j].ext))
+}
+
+func naturalCmp(d *dir, i, j int) int {
+	return threeWayCompare(d.files[i].name + d.files[i].ext, d.files[j].name + d.files[j].ext)
+}
+
+func extCmp(d *dir, i, j int) int {
+	return strings.Compare(cleanupName(d.files[i].ext), cleanupName(d.files[j].ext))
+}
+
+func sizeCmp(d *dir, i, j int) int {
+	// size comparison is largest first, so negate the result
+	return -threeWayCompare(d.files[i].size, d.files[j].size)
+}
+
+func dirFlagCmp(d *dir, i, j int) int {
+	// directory flag compare, directories first
+	if d.files[i].isDir == d.files[j].isDir {
+		return 0
+	}
+	if d.files[i].isDir {
+		return -1
+	}
+	return 1
+}
+
+func dirFlagCmpReverse(d *dir, i, j int) int {
+	return -dirFlagCmp(d, i, j)
+}
+
+func modTimeCmp(d *dir, i, j int) int {
+	if d.files[i].modTime.After(d.files[j].modTime) {
+		return -1
+	}
+	if d.files[i].modTime.Before(d.files[j].modTime) {
+		return 1
+	}
+	return 0
+}
+
+func doCompare(d *dir, i, j int, funcs [] func(d *dir, i,j int) int) bool {
+	for k := len(funcs)-1; k >= 0; k-- {
+		var result = funcs[k](d, i, j)
+		switch result {
+		case -1: return true
+		case 1: return false
+		case 0: // do nothing, go to the next comparator
+		}
+	}
+	return false
+}
+
 
 // Custom less functions
 func lessFuncGenerator(d *dir) {
+	var compareFuncs = []func(d *dir, i,j int) int{}
+
 	switch {
 	case (api.FlagVector & api.Flag_alpha) > 0:
-		// sort by alphabetical order of name.ext
-		d.less = func(i, j int) bool {
-			return mainSort(d.files[i].name+d.files[i].ext, d.files[j].name+d.files[j].ext)
-		}
+		compareFuncs = append(compareFuncs, nameCmp)
 	case (api.FlagVector & api.Flag_S) > 0:
 		// sort by file size, largest first
-		d.less = func(i, j int) bool {
-			if d.files[i].size > d.files[j].size {
-				return true
-			} else if d.files[i].size == d.files[j].size {
-				return mainSort(d.files[i].name+d.files[i].ext, d.files[j].name+d.files[j].ext)
-			} else {
-				return false
-			}
-		}
+		compareFuncs = append(compareFuncs, nameCmp, sizeCmp)
 	case (api.FlagVector & api.Flag_t) > 0:
 		// sort by modification time, newest first
 		// not sorting by alphabetical order because equality is quite rare
-		d.less = func(i, j int) bool {
-			return d.files[i].modTime.After(d.files[j].modTime)
-		}
+		compareFuncs = append(compareFuncs, modTimeCmp)
 	case (api.FlagVector & api.Flag_X) > 0:
 		// sort alphabetically by entry extension
-		d.less = func(i, j int) bool {
-			if mainSort(d.files[i].ext, d.files[j].ext) {
-				return true
-			} else if strings.ToLower(d.files[i].ext) == strings.ToLower(d.files[j].ext) {
-				return mainSort(d.files[i].name+d.files[i].ext, d.files[j].name+d.files[j].ext)
-			} else {
-				return false
-			}
-		}
+		compareFuncs = append(compareFuncs, nameCmp, extCmp)
 	case (api.FlagVector & api.Flag_v) > 0:
 		// natural sort of (version) numbers within text
-		d.less = func(i, j int) bool {
-			return d.files[i].name+d.files[i].ext < d.files[j].name+d.files[j].ext
-		}
+		compareFuncs = append(compareFuncs, naturalCmp)
 	default:
-		// no sorting
-		d.less = func(i, j int) bool {
-			return i < j
+		compareFuncs = append(compareFuncs, indexCmp)
+	}
+
+	if (api.FlagVector & api.Flag_groupDirs) > 0 {
+		if (api.FlagVector & api.Flag_r) > 0 {
+			// Reverse the order of dir vs files if reverse flag is on
+			compareFuncs = append(compareFuncs, dirFlagCmpReverse)
+		} else {
+			compareFuncs = append(compareFuncs, dirFlagCmp)
 		}
+	}
+
+	d.less = func(i, j int) bool {
+		return doCompare(d, i, j, compareFuncs)
 	}
 }
 

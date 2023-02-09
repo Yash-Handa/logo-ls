@@ -81,13 +81,21 @@ func TestE2E(t *testing.T) {
 	}{
 		{args: []string{"-1"}, testFile: "logo-ls.snap", td: "Testing normal execution"},
 		{args: []string{"-1a"}, testFile: "logo-ls-a.snap", td: "Testing -a (all) execution"},
+		{args: []string{"-1ae"}, testFile: "logo-ls-ae.snap", td: "Testing -ae (all) execution (group dirs)"},
 		{args: []string{"-1A"}, testFile: "logo-ls-A.snap", td: "Testing -A (almost all) execution"},
+		{args: []string{"-1Ae"}, testFile: "logo-ls-Ae.snap", td: "Testing -Ae (almost all) execution (group dirs)"},
 		{args: []string{"-1i"}, testFile: "logo-ls-i.snap", td: "Testing -i (no icon) execution"},
+		{args: []string{"-1ie"}, testFile: "logo-ls-ie.snap", td: "Testing -ie (no icon) execution (group dirs)"},
 		{args: []string{"-1r"}, testFile: "logo-ls-r.snap", td: "Testing -r (reverse) execution"},
+		{args: []string{"-1re"}, testFile: "logo-ls-re.snap", td: "Testing -re (reverse) execution (group dirs)"},
 		{args: []string{"-1sh"}, testFile: "logo-ls-sh.snap", td: "Testing -sh (human readable size) execution"},
+		{args: []string{"-1she"}, testFile: "logo-ls-she.snap", td: "Testing -she (human readable size) execution (group dirs)"},
 		{args: []string{"-1R"}, testFile: "logo-ls-R.snap", td: "Testing -R (recursive) execution"},
+		{args: []string{"-1Re"}, testFile: "logo-ls-Re.snap", td: "Testing -Re (recursive) execution (group dirs)"},
 		{args: []string{"-1Ra"}, testFile: "logo-ls-Ra.snap", td: "Testing -Ra (recursive, all) execution"},
+		{args: []string{"-1Rae"}, testFile: "logo-ls-Rae.snap", td: "Testing -Rae (recursive, all) execution (group dirs)"},
 		{args: []string{"-1shRa"}, testFile: "logo-ls-shRa.snap", td: "Testing -shRa execution"},
+		{args: []string{"-1shRae"}, testFile: "logo-ls-shRae.snap", td: "Testing -shRae execution (group dirs)"},
 		{args: []string{"-V"}, testFile: "logo-ls-V.snap", td: "Testing -V option prints version"},
 		{args: []string{"-?"}, testFile: "logo-ls--help.snap", td: "Testing -? (help) prints help message"},
 	}
@@ -119,7 +127,7 @@ func TestE2E(t *testing.T) {
 			}
 
 			if bytes.Compare(cmdData, fileData) != 0 {
-				t.Fatalf("expected output of the command:\n-----------\n%s\n=============\nbut got:\n-----------\n%s", fileData, cmdData)
+				t.Fatalf("expected output of the command with args %s:\n-----------\n%s\n=============\nbut got:\n-----------\n%s", test.args, fileData, cmdData)
 			}
 		})
 	}
