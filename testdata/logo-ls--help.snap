@@ -1,6 +1,6 @@
 List information about the FILEs with ICONS and GIT STATUS (the current dir 
 by default). Sort entries alphabetically if none of -tvSUX is specified.
-Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
+Usage: logo-ls [-1?aAcdDegGhiloRrSstUvVX] [-T value] [files ...]
  -1                list one file per line.
  -?, --help        display this help and exit
  -a, --all         do not ignore entries starting with .
@@ -10,6 +10,8 @@ Usage: logo-ls [-1?aAcdDgGhiloRrSstUvVX] [-T value] [files ...]
                    print to a file)
  -d, --directory   list directories themselves, not their contents
  -D, --git-status  print git status of files
+ -e, --group-directories-first
+                   group directories before files
  -g                like -l, but do not list owner
  -G, --no-group    in a long listing, don't print group names
  -h, --human-readable

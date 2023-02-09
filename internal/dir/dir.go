@@ -27,6 +27,7 @@ type file struct {
 	name, ext, indicator string
 	modTime              time.Time
 	size                 int64 // in bytes
+	isDir                bool
 	mode                 string
 	modeBits             uint32
 	owner, group         string // use syscall package
@@ -56,6 +57,7 @@ func New(d *os.File) (*dir, error) {
 	// filing current dir info
 	t.info = new(file)
 	t.info.name = "."
+	t.info.isDir = true
 	ds, err := d.Stat()
 	if err != nil {
 		return nil, err
@@ -108,6 +110,7 @@ func New(d *os.File) (*dir, error) {
 		f.indicator = getIndicator(v.Mode())
 		f.size = v.Size()
 		f.modTime = v.ModTime()
+		f.isDir = v.IsDir()
 		if long {
 			f.mode = v.Mode().String()
 			f.modeBits = uint32(v.Mode())
@@ -156,6 +159,7 @@ func New(d *os.File) (*dir, error) {
 		t.parent.name = ".."
 		t.parent.size = pds.Size()
 		t.parent.modTime = pds.ModTime()
+		t.parent.isDir = true
 		if long {
 			t.parent.mode = pds.Mode().String()
 			t.parent.modeBits = uint32(pds.Mode())
@@ -191,6 +195,7 @@ func New_ArgFiles(files []os.FileInfo) *dir {
 		f.indicator = getIndicator(v.Mode())
 		f.size = v.Size()
 		f.modTime = v.ModTime()
+		f.isDir = v.IsDir()
 		if long {
 			f.mode = v.Mode().String()
 			f.modeBits = uint32(v.Mode())
