@@ -118,6 +118,7 @@ var Icon_Ext = map[string]*Icon_Info{
 	"vsixmanifest":      Icon_Set["vscode"],
 	"vsix":              Icon_Set["vscode"],
 	"code-workplace":    Icon_Set["vscode"],
+	"code-workspace":    Icon_Set["vscode"],
 	"csproj":            Icon_Set["visualstudio"],
 	"ruleset":           Icon_Set["visualstudio"],
 	"sln":               Icon_Set["visualstudio"],
