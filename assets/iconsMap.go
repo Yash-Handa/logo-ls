@@ -344,8 +344,8 @@ var Icon_Set = map[string]*Icon_Info{
 	"dir-upload":      {i: "\U000f0259", c: [3]uint8{250, 111, 66}},   // dir-upload
 	"dir-download":    {i: "\U000f024d", c: [3]uint8{76, 175, 80}},    // dir-download
 	"dir-secure":      {i: "\U000f0250", c: [3]uint8{249, 169, 60}},   // dir-secure
-	"dir-images":      {i: "\uf74e", c: [3]uint8{43, 150, 137}},       // dir-images
-	"dir-environment": {i: "\uf74e", c: [3]uint8{102, 187, 106}},      // dir-environment
+	"dir-images":      {i: "\U000f024f", c: [3]uint8{43, 150, 137}},   // dir-images
+	"dir-environment": {i: "\U000f024f", c: [3]uint8{102, 187, 106}},  // dir-environment
 }
 
 // default icons in case nothing can be found
